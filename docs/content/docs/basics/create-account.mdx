@@ -1,0 +1,158 @@
+---
+title: Create an account
+description: Register an account, sign into your account, and obtain a token.
+---
+
+## Preparation
+
+You don't need to setup anything! Any runtime or language you are already using is capable of sending HTTP requests, so simply use what you are familiar with.
+
+All examples will be written as CURL requests. This format is easy to run in terminal, import into HTTP clients, and all AI agents understand it (so you can easily convert it into your preferred programming language).
+
+Here is example of a CURL request:
+
+```bash
+curl -X GET https://api.http-games.almostapps.eu/v1/health
+```
+
+After running the command, you should see a response similar to this:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+## Signing up
+
+To register an account, send an HTTP request with email, password (twice), and a nickname.
+
+Email is used only for authentication purposes, so it will not be publicly displayed. Only your nickname will be public.
+
+```bash
+curl \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "user@example.com",
+    "password": "password",
+    "passwordConfirmation": "password",
+    "nickname": "User123"
+  }' \
+  https://api.http-games.almostapps.eu/v1/users
+```
+
+You should expect one of following responses:
+
+### Bad request (400)
+
+Error usually thrown when body is missing or invalid. Common reasons are password confirmation missmatch, too short password, or invalid email address.
+
+### Conflict (409)
+
+If user with same email or nickname already exists, you will receive a conflict error.
+
+### Success (200)
+
+Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
+
+```json
+{
+  "$id": "user_id",
+  "email": "user@example.com",
+  "nickname": "User123",
+  "token": "sk_Guei2HJgU..."
+}
+```
+
+Token is very important! If you are seasoned developer, you can now skip ahead to [Authentication](#authentication) section. But if you are new, continue to next section.
+
+## Signing in
+
+Ensure you have signed up first, and you remember your email and password.
+
+To sign in, send an HTTP request with your credentials.
+
+```bash
+curl \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "user@example.com",
+    "password": "password"
+  }' \
+  https://api.http-games.almostapps.eu/v1/users/sessions
+```
+
+You should expect one of following responses:
+
+### Bad request (400)
+
+Error usually thrown when body is missing or invalid. Common reason is invalid credentials.
+
+### Success (200)
+
+Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
+
+```json
+{
+  "$id": "67c0eaa...",
+  "email": "user@example.com",
+  "nickname": "User123",
+  "token": "sk_Guei2HJgU..."
+}
+```
+
+## Authentication
+
+If you haven't yet obtained a token, follow [Signing up](#signing-up) and [Signing in](#signing-in) sections.
+
+From now on, you will need to provide your token in `Authorization` header for all requests that require authentication.
+
+```http
+Authentication: Bearer sk_Guei2HJgU...
+```
+
+To test this out, you can send a request to get details about your account. This request can only succeed if you have a valid token, and provide it properly.
+
+```bash
+curl \
+  -X GET \
+  -H 'Authentication: Bearer sk_Guei2HJgU...' \
+  https://api.http-games.almostapps.eu/v1/users/[YOUR_USER_ID]
+```
+
+<Callout>
+    Remember to update URL with your user ID. If you don't remember it, refer to [Signing in](#signing-in) section.
+</Callout>
+
+Following responses are possible:
+
+### Unauthorized (401)
+
+Error thrown when token is missing or invalid. Make sure your token is valid, and the header is properly set.
+
+### Forbidden (403)
+
+Error thrown when the token is valid, but it's a token of another user. You might have not set your user ID in the URL properly.
+
+### Success (200)
+
+You get details about your account, indicating you are properly authenticated and permitted to see details about your account.
+
+```
+{
+  "$id": "67c0eaa...",
+  "email": "user@example.com",
+  "nickname": "User123",
+  "token": "sk_Guei2HJgU..."
+}
+```
+
+You have successfully opened your account, signed in, and made your very first authenticated request! You are now ready to play HTTP games.
+
+## What next?
+
+<Cards>
+  <Card description="Very simple game about finding safe path to the finish. Each time you fail path, remember the wrong moves." title="Grid Trap, your first game" href="/docs/grid-trap" />
+</Cards>
