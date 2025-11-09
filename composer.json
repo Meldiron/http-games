@@ -1,0 +1,35 @@
+{
+    "name": "meldiron/http-games",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "HTTPGames\\": "src/"
+        }
+    },
+    "scripts": {
+      "install": "composer install --ignore-platform-reqs",
+      "dev": "php -S 0.0.0.0:8000 app/http.php",
+      "lint": "./vendor/bin/pint --test",
+      "format": "./vendor/bin/pint",
+      "check": "./vendor/bin/phpstan analyse --level 8 src app"
+    },
+    "authors": [
+        {
+            "name": "Meldiron"
+        }
+    ],
+    "require": {
+        "utopia-php/http": "1.2.*",
+        "utopia-php/platform": "0.7.*"
+    },
+    "require-dev": {
+      "laravel/pint": "1.*.*",
+      "phpstan/phpstan": "1.*.*"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "tbachert/spi": true
+        }
+    }
+}
