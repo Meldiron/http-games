@@ -19,6 +19,7 @@
         }
     ],
     "require": {
+        "php": ">=8.0",
         "utopia-php/framework": "0.33.*",
         "utopia-php/platform": "0.7.*"
     },
@@ -30,6 +31,9 @@
         "allow-plugins": {
             "php-http/discovery": true,
             "tbachert/spi": true
+        },
+        "platform": {
+            "php": "8.4"
         }
     }
 }
