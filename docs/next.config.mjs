@@ -6,7 +6,7 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   output: "export",
-  skipTrailingSlashRedirect: true,
+  trailingSlash: true,
 };
 
 export default withMDX(config);
