@@ -2,7 +2,11 @@
 
 namespace HTTPGames\Hooks;
 
+use HTTPGames\Exceptions\HTTPException;
+use Utopia\App;
+use Utopia\Exception as UtopiaException;
 use Utopia\Platform\Action;
+use Utopia\Response;
 
 class OnError extends Action
 {
@@ -12,11 +16,49 @@ class OnError extends Action
             ->setType(Action::TYPE_ERROR)
             ->groups(['*'])
             ->inject('error')
+            ->inject('response')
             ->callback($this->action(...));
     }
 
-    public function action(\Throwable $error): void
+    public function action(\Throwable $error, Response $response): void
     {
-        \var_dump($error);
+        if (App::getMode() !== App::MODE_TYPE_PRODUCTION) {
+            echo '----'.PHP_EOL;
+            echo 'Type: '.\get_class($error).PHP_EOL;
+            echo 'Message: '.$error->getMessage().PHP_EOL;
+            echo 'Trace: '.$error->getTraceAsString().PHP_EOL;
+            echo 'File: '.$error->getFile().':'.$error->getLine().PHP_EOL;
+            echo '----'.PHP_EOL;
+        }
+
+        $publicError = new HTTPException(HTTPException::TYPE_INTERNAL_SERVER_ERROR);
+
+        if ($error instanceof HTTPException) {
+            $publicError = $error;
+        }
+
+        if ($error instanceof UtopiaException) {
+            $publicError = $error;
+            $type = HTTPException::TYPE_BAD_REQUEST;
+        }
+
+        $code = $publicError->getCode();
+        if ($code === 0) {
+            $code = 500;
+        }
+
+        if (empty($type)) {
+            if (\method_exists($publicError, 'getType')) {
+                $type = $publicError->getType();
+            } else {
+                $type = HTTPException::TYPE_INTERNAL_SERVER_ERROR;
+            }
+        }
+
+        $response->setStatusCode($code);
+        $response->json([
+            'type' => $type,
+            'message' => $publicError->getMessage(),
+        ]);
     }
 }
