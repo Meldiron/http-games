@@ -41,3 +41,24 @@ jobs:
       
     - name: Run static analysis
       run: composer check
+  
+  docs:
+    name: Docs Lint Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        
+    - name: Install dependencies
+      run: npm ci
+      working-directory: docs
+      
+    - name: Run lint check
+      run: npm run lint
+      working-directory: docs
