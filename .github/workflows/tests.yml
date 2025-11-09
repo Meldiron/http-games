@@ -5,7 +5,7 @@ on:
 
 jobs:
   api:
-    name: Code Style Check
+    name: API (Lint, CodeQL, Tests)
     runs-on: ubuntu-latest
 
     steps:
@@ -32,13 +32,24 @@ jobs:
         run: composer check
 
       - name: Run PHP server
-        run: php -S 0.0.0.0:8000 app/http.php
+        run: php -S 0.0.0.0:8000 app/http.php &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -f http://localhost:8000 > /dev/null 2>&1; then
+              echo "Server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 1
+          done
 
       - name: Run tests
         run: composer test
 
   docs:
-    name: Docs Lint Check
+    name: Docs (lint, build)
     runs-on: ubuntu-latest
 
     steps:
@@ -56,4 +67,8 @@ jobs:
 
       - name: Run lint check
         run: npm run lint
+        working-directory: docs
+
+      - name: Run build
+        run: npm run build
         working-directory: docs
