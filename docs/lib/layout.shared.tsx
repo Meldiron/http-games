@@ -1,9 +1,8 @@
-import { BookIcon } from 'lucide-react';
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 export function baseOptions(): BaseLayoutProps {
   return {
-    githubUrl: 'https://github.com/meldiron/http-games',
+    githubUrl: "https://github.com/meldiron/http-games",
     nav: {
       title: "HTTP Games",
     },

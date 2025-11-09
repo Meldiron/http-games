@@ -1,11 +1,16 @@
-import React from 'react';
-import {GraduationCap } from 'lucide-react'
-import { COLOR_YELLOW } from './dynamic-theme';
+import { GraduationCap } from "lucide-react";
+import type React from "react";
+import { COLOR_YELLOW } from "./dynamic-theme";
 
-export const GraduationCapColored: React.FC<any> = (props) => {
+export const GraduationCapColored: React.FC<React.ComponentProps<"svg">> = (
+  props,
+) => {
   return (
-    <GraduationCap style={{
-      color: COLOR_YELLOW
-    }} {...props} />
+    <GraduationCap
+      style={{
+        color: COLOR_YELLOW,
+      }}
+      {...props}
+    />
   );
 };

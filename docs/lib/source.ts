@@ -1,8 +1,8 @@
 import { type InferPageType, loader } from "fumadocs-core/source";
 import { lucideIconsPlugin } from "fumadocs-core/source/lucide-icons";
-import { docs } from "@/.source";
 import { icons } from "lucide-react";
 import { createElement } from "react";
+import { docs } from "@/.source";
 import { GraduationCapColored } from "@/components/graduation-cap-colored";
 import { Grid3x3Colored } from "@/components/grid-3x3-colored";
 
@@ -13,14 +13,14 @@ export const source = loader({
   plugins: [lucideIconsPlugin()],
   icon(icon) {
     if (!icon) return;
-    
+
     // Handle custom icons
     if (icon === "GraduationCapColored") {
       return createElement(GraduationCapColored);
     } else if (icon === "Grid3x3Colored") {
       return createElement(Grid3x3Colored);
     }
-    
+
     // Handle standard lucide icons
     if (icon in icons) {
       return createElement(icons[icon as keyof typeof icons]);
