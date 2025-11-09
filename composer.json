@@ -7,12 +7,11 @@
         }
     },
     "scripts": {
-      "install": "composer install --ignore-platform-reqs",
       "dev": "php -S 0.0.0.0:8000 app/http.php",
       "lint": "./vendor/bin/pint --test",
       "format": "./vendor/bin/pint",
       "check": "./vendor/bin/phpstan analyse --level 8 src app",
-      "test": "hurl --test ."
+      "test": "hurl --test --glob 'tests/**/*.hurl'"
     },
     "authors": [
         {
