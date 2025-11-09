@@ -1,5 +1,5 @@
 {
-    "name": "http-games",
+    "name": "meldiron/http-games",
     "type": "project",
     "autoload": {
         "psr-4": {
