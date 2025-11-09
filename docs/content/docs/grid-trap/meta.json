@@ -1,0 +1,6 @@
+{
+  "title": "Grid Trap",
+  "description": "Find safe path to finish.",
+  "root": true,
+  "icon": "Grid3x3Colored"
+}
