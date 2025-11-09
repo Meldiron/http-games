@@ -2,10 +2,11 @@
 
 namespace HTTPGames;
 
-use HTTPGames\Events\OnError;
-use HTTPGames\Events\OnInit;
-use HTTPGames\Events\OnShutdown;
 use HTTPGames\Games\GridTrap\Create as CreateGridTrapGame;
+use HTTPGames\Health\Get as GetHealth;
+use HTTPGames\Hooks\OnError;
+use HTTPGames\Hooks\OnInit;
+use HTTPGames\Hooks\OnShutdown;
 use Utopia\Platform\Service as UtopiaService;
 
 class Service extends UtopiaService
@@ -19,5 +20,7 @@ class Service extends UtopiaService
         $this->addAction('onShutdown', new OnShutdown);
 
         $this->addAction('createGridTrapGame', new CreateGridTrapGame);
+
+        $this->addAction('getHealth', new GetHealth);
     }
 }

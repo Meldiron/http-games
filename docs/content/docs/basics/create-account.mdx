@@ -42,28 +42,32 @@ curl \
   https://api.http-games.almostapps.eu/v1/users
 ```
 
-You should expect one of following responses:
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
 
-### Bad request (400)
-
-Error usually thrown when body is missing or invalid. Common reasons are password confirmation missmatch, too short password, or invalid email address.
-
-### Conflict (409)
-
-If user with same email or nickname already exists, you will receive a conflict error.
-
-### Success (200)
-
-Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
-
-```json
-{
-  "$id": "user_id",
-  "email": "user@example.com",
-  "nickname": "User123",
-  "token": "sk_Guei2HJgU..."
-}
-```
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Bad request (400)
+      
+    Error usually thrown when body is missing or invalid. Common reasons are password confirmation missmatch, too short password, or invalid email address.
+    
+    ### Conflict (409)
+    
+    If user with same email or nickname already exists, you will receive a conflict error.
+    
+    ### Success (200)
+    
+    Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
+    
+    ```json
+    {
+      "$id": "user_id",
+      "email": "user@example.com",
+      "nickname": "User123",
+      "token": "sk_Guei2HJgU..."
+    }
+    ```
+  </Accordion>
+</Accordions>
 
 Token is very important! If you are seasoned developer, you can now skip ahead to [Authentication](#authentication) section. But if you are new, continue to next section.
 
@@ -84,26 +88,26 @@ curl \
   https://api.http-games.almostapps.eu/v1/users/sessions
 ```
 
-You should expect one of following responses:
-
-### Bad request (400)
-
-Error usually thrown when body is missing or invalid. Common reason is invalid credentials.
-
-### Success (200)
-
-Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
-
-```json
-{
-  "$id": "67c0eaa...",
-  "email": "user@example.com",
-  "nickname": "User123",
-  "token": "sk_Guei2HJgU..."
-}
-```
-
-## Authentication
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Bad request (400)
+    
+    Error usually thrown when body is missing or invalid. Common reason is invalid credentials.
+    
+    ### Success (200)
+    
+    Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
+    
+    ```json
+    {
+    "$id": "67c0eaa...",
+    "email": "user@example.com",
+    "nickname": "User123",
+    "token": "sk_Guei2HJgU..."
+    }
+    ```
+  </Accordion>
+</Accordions>
 
 If you haven't yet obtained a token, follow [Signing up](#signing-up) and [Signing in](#signing-in) sections.
 
@@ -123,36 +127,43 @@ curl \
 ```
 
 <Callout>
-    Remember to update URL with your user ID. If you don't remember it, refer to [Signing in](#signing-in) section.
+  Remember to update URL with your user ID. If you don't remember it, refer to
+  [Signing in](#signing-in) section.
 </Callout>
 
-Following responses are possible:
-
-### Unauthorized (401)
-
-Error thrown when token is missing or invalid. Make sure your token is valid, and the header is properly set.
-
-### Forbidden (403)
-
-Error thrown when the token is valid, but it's a token of another user. You might have not set your user ID in the URL properly.
-
-### Success (200)
-
-You get details about your account, indicating you are properly authenticated and permitted to see details about your account.
-
-```
-{
-  "$id": "67c0eaa...",
-  "email": "user@example.com",
-  "nickname": "User123",
-  "token": "sk_Guei2HJgU..."
-}
-```
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Unauthorized (401)
+    
+    Error thrown when token is missing or invalid. Make sure your token is valid, and the header is properly set.
+    
+    ### Forbidden (403)
+    
+    Error thrown when the token is valid, but it's a token of another user. You might have not set your user ID in the URL properly.
+    
+    ### Success (200)
+    
+    You get details about your account, indicating you are properly authenticated and permitted to see details about your account.
+    
+    ```json
+    {
+    "$id": "67c0eaa...",
+    "email": "user@example.com",
+    "nickname": "User123",
+    "token": "sk_Guei2HJgU..."
+    }
+    ```
+  </Accordion>
+</Accordions>
 
 You have successfully opened your account, signed in, and made your very first authenticated request! You are now ready to play HTTP games.
 
 ## What next?
 
 <Cards>
-  <Card description="Very simple game about finding safe path to the finish. Each time you fail path, remember the wrong moves." title="Grid Trap, your first game" href="/docs/grid-trap" />
+  <Card
+    description="Very simple game about finding safe path to the finish. Each time you fail path, remember the wrong moves."
+    title="Grid Trap, your first game"
+    href="/docs/grid-trap"
+  />
 </Cards>

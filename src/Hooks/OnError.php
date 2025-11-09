@@ -1,6 +1,6 @@
 <?php
 
-namespace HTTPGames\Events;
+namespace HTTPGames\Hooks;
 
 use Utopia\Platform\Action;
 

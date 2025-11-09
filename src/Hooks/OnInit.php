@@ -1,20 +1,18 @@
 <?php
 
-namespace HTTPGames\Events;
+namespace HTTPGames\Hooks;
 
 use Utopia\Platform\Action;
 
-class OnShutdown extends Action
+class OnInit extends Action
 {
     public function __construct()
     {
         $this
-            ->setType(Action::TYPE_SHUTDOWN)
+            ->setType(Action::TYPE_INIT)
             ->groups(['*'])
             ->callback($this->action(...));
     }
 
-    public function action(): void
-    {
-    }
+    public function action(): void {}
 }
