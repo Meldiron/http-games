@@ -10,11 +10,11 @@ class OnInit extends Action
     {
         $this
             ->setType(Action::TYPE_INIT)
+            ->groups(['*'])
             ->callback($this->action(...));
     }
 
     public function action(): void
     {
-        \var_dump('On init');
     }
 }

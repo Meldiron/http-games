@@ -10,6 +10,7 @@ class OnError extends Action
     {
         $this
             ->setType(Action::TYPE_ERROR)
+            ->groups(['*'])
             ->inject('error')
             ->callback($this->action(...));
     }

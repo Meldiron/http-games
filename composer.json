@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "utopia-php/http": "1.2.*",
+        "utopia-php/framework": "0.33.*",
         "utopia-php/platform": "0.7.*"
     },
     "require-dev": {

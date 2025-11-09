@@ -2,8 +2,8 @@
 
 namespace HTTPGames\Games\GridTrap;
 
-use Utopia\Http\Response;
 use Utopia\Platform\Action;
+use Utopia\Response;
 
 class Create extends Action
 {

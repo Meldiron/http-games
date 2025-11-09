@@ -10,11 +10,11 @@ class OnShutdown extends Action
     {
         $this
             ->setType(Action::TYPE_SHUTDOWN)
+            ->groups(['*'])
             ->callback($this->action(...));
     }
 
     public function action(): void
     {
-        \var_dump('On Shutdown');
     }
 }
