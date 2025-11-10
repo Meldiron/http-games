@@ -11,7 +11,17 @@ if (($_ENV['_APP_LOGGING'] ?? 'disabled') === 'disabled') {
     ini_set('display_startup_errors', 'Off');
 }
 
-// Temporary fix for loading .env and env vars together
-if (! empty(\getenv('_APP_DATABASE_OVERRIDE'))) {
-    $_ENV['_APP_DATABASE_OVERRIDE'] = \getenv('_APP_DATABASE_OVERRIDE');
+$envVars = [
+    '_APP_DATABASE_OVERRIDE',
+    '_APP_LOGGING',
+    '_APP_APPWRITE_ENDPOINT',
+    '_APP_APPWRITE_KEY',
+    '_APP_APPWRITE_PROJECT_ID',
+    '_APP_DATABASE_OVERRIDE',
+];
+
+foreach ($envVars as $envVar) {
+    if (! empty(\getenv($envVar))) {
+        $_ENV[$envVar] = \getenv($envVar);
+    }
 }
