@@ -1,8 +1,7 @@
 <?php
 
-namespace HTTPGames\Users;
+namespace HTTPGames\Sessions;
 
-use Appwrite\ID;
 use Appwrite\Query;
 use Appwrite\Services\TablesDB;
 use HTTPGames\Exceptions\HTTPException;
@@ -17,12 +16,10 @@ class Create extends Action
     {
         $this
             ->setHttpMethod('POST')
-            ->setHttpPath('/v1/users')
-            ->desc('Register new user')
+            ->setHttpPath('/v1/sessions')
+            ->desc('Sign in as user')
             ->param('email', '', new Email)
             ->param('password', '', new Text(256, 8))
-            ->param('passwordConfirmation', '', new Text(256, 8))
-            ->param('nickname', '', new Text(64, 5))
             ->inject('response')
             ->inject('sdkForTables')
             ->inject('databaseId')
@@ -32,45 +29,30 @@ class Create extends Action
     public function action(
         string $email,
         string $password,
-        string $passwordConfirmation,
-        string $nickname,
         Response $response,
         TablesDB $sdkForTables,
         string $databaseId
     ): void {
-        if ($password !== $passwordConfirmation) {
-            throw new HTTPException(HTTPException::TYPE_PASSWORDS_DO_NOT_MATCH);
-        }
-
         $users = $sdkForTables->listRows(
             databaseId: $databaseId,
             tableId: 'users',
             queries: [
-                Query::or([
-                    Query::equal('email', $email),
-                    Query::equal('nickname', $nickname),
-                ]),
+                Query::equal('email', $email),
                 Query::limit(1),
             ]
         );
 
-        if ($users['total'] > 0) {
-            throw new HTTPException(HTTPException::TYPE_USER_ALREADY_EXISTS);
+        if ($users['total'] <= 0) {
+            throw new HTTPException(HTTPException::TYPE_WRONG_CREDENTIALS);
         }
 
-        $token = 'sk_'.ID::unique(64);
+        $user = $users['rows'][0];
 
-        $user = $sdkForTables->createRow(
-            databaseId: $databaseId,
-            tableId: 'users',
-            rowId: ID::unique(),
-            data: [
-                'nickname' => $nickname,
-                'email' => $email,
-                'passwordHash' => \password_hash($password, PASSWORD_ARGON2I),
-                'token' => $token,
-            ]
-        );
+        $passwordHash = $user['passwordHash'];
+
+        if (! (\password_verify($password, $passwordHash))) {
+            throw new HTTPException(HTTPException::TYPE_WRONG_CREDENTIALS);
+        }
 
         $response->setStatusCode(Response::STATUS_CODE_CREATED);
         $response->json([

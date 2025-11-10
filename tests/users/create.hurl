@@ -91,7 +91,7 @@ variable: user_email={{user_nickname}}@httpgames.com
   "passwordConfirmation": "password",
   "nickname": "{{user_nickname}}"
 }
-HTTP 200
+HTTP 201
 [Captures]
 user_id: jsonpath "$.id"
 [Asserts]

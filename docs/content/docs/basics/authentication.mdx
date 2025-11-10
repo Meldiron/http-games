@@ -54,7 +54,7 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
     
     If user with same email or nickname already exists, you will receive a conflict error.
     
-    ### Success (200)
+    ### Created (201)
     
     Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
     
@@ -85,7 +85,7 @@ curl \
     "email": "user@example.com",
     "password": "password"
   }' \
-  https://api.http-games.almostapps.eu/v1/users/sessions
+  https://api.http-games.almostapps.eu/v1/sessions
 ```
 
 <Accordions type="single">
@@ -94,16 +94,16 @@ curl \
     
     Error usually thrown when body is missing or invalid. Common reason is invalid credentials.
     
-    ### Success (200)
+    ### Created (201)
     
     Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
     
     ```json
     {
-    "id": "67c0eaa...",
-    "email": "user@example.com",
-    "nickname": "User123",
-    "token": "sk_Guei2HJgU..."
+      "id": "67c0eaa...",
+      "email": "user@example.com",
+      "nickname": "User123",
+      "token": "sk_Guei2HJgU..."
     }
     ```
   </Accordion>
@@ -147,10 +147,10 @@ curl \
     
     ```json
     {
-    "id": "67c0eaa...",
-    "email": "user@example.com",
-    "nickname": "User123",
-    "token": "sk_Guei2HJgU..."
+      "id": "67c0eaa...",
+      "email": "user@example.com",
+      "nickname": "User123",
+      "token": "sk_Guei2HJgU..."
     }
     ```
   </Accordion>

@@ -5,6 +5,37 @@ use Appwrite\Client;
 use Appwrite\Query;
 use Appwrite\Services\TablesDB;
 use Utopia\App;
+use Utopia\Database\Document;
+use Utopia\Request;
+
+App::setResource('user', function (Request $request, string $databaseId, TablesDB $sdkForTables) {
+    // Bearer sk_...
+    $authorization = $request->getHeader('authorization', '');
+    $key = \explode(' ', $authorization);
+    $token = $key[1] ?? '';
+
+    if (empty($token) || ! (\str_starts_with($token, 'sk_'))) {
+        return new Document;
+    }
+
+    $users = $sdkForTables->listRows(
+        databaseId: $databaseId,
+        tableId: 'users',
+        queries: [
+            Query::equal('token', $token),
+            Query::limit(1),
+        ]
+    );
+
+    if ($users['total'] <= 0) {
+        return new Document;
+    }
+
+    $user = $users['rows'][0];
+
+    return new Document($user);
+
+}, ['request', 'databaseId', 'sdkForTables']);
 
 App::setResource('databaseId', function () {
     $databaseId = $_ENV['_APP_DATABASE_OVERRIDE'];
@@ -40,7 +71,7 @@ App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
             $sdkForTables->createTable($databaseId, 'users', 'Users');
             $sdkForTables->createStringColumn($databaseId, 'users', 'email', 255, required: true);
             $sdkForTables->createStringColumn($databaseId, 'users', 'passwordHash', 255, required: true, encrypt: true);
-            $sdkForTables->createStringColumn($databaseId, 'users', 'token', 255, required: true, encrypt: true);
+            $sdkForTables->createStringColumn($databaseId, 'users', 'token', 255, required: true);
             $sdkForTables->createStringColumn($databaseId, 'users', 'nickname', 255, required: true);
 
             $attempts = 0;

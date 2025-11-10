@@ -18,7 +18,21 @@ class HTTPException extends \Exception
 
     public const TYPE_USER_ALREADY_EXISTS = 'user_already_exists';
 
+    public const TYPE_WRONG_CREDENTIALS = 'wrong_credentials';
+
+    public const TYPE_UNAUTHORIZED = 'unauthorized';
+
+    public const TYPE_FORBIDDEN = 'forbidden';
+
     const EXCEPTIONS = [
+        self::TYPE_UNAUTHORIZED => [
+            'message' => 'You are missing token in Authorization header.',
+            'code' => 401,
+        ],
+        self::TYPE_FORBIDDEN => [
+            'message' => 'Your token is not allowed to access this resource.',
+            'code' => 401,
+        ],
         self::TYPE_PASSWORDS_DO_NOT_MATCH => [
             'message' => 'Passwords do not match.',
             'code' => 400,
@@ -26,6 +40,10 @@ class HTTPException extends \Exception
         self::TYPE_USER_ALREADY_EXISTS => [
             'message' => 'User with this email or nickname already exists.',
             'code' => 409,
+        ],
+        self::TYPE_WRONG_CREDENTIALS => [
+            'message' => 'Wrong email or password.',
+            'code' => 401,
         ],
         self::TYPE_UNKNOWN => [
             'message' => 'Unknown error.',
