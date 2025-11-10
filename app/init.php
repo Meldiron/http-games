@@ -3,7 +3,7 @@
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__.'/../');
-$dotenv->load();
+$dotenv->safeLoad();
 
 if (($_ENV['_APP_LOGGING'] ?? 'disabled') === 'disabled') {
     ini_set('error_reporting', 0);
