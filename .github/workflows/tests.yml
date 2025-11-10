@@ -26,7 +26,7 @@ jobs:
         run: npm install -g appwrite-cli
         
       - name: Authenticate Appwrite CLI
-        run: appwrite client --projectId ${{ secrets._APP_APPWRITE_PROJECT_ID }} --endpoint ${{ secrets._APP_APPWRITE_ENDPOINT }} --key ${{ secrets._APP_APPWRITE_KEY }}
+        run: appwrite client --project-id ${{ secrets._APP_APPWRITE_PROJECT_ID }} --endpoint ${{ secrets._APP_APPWRITE_ENDPOINT }} --key ${{ secrets._APP_APPWRITE_KEY }}
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --ignore-platform-reqs
