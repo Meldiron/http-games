@@ -7,7 +7,7 @@
         }
     },
     "scripts": {
-      "dev": "php -S 0.0.0.0:8000 app/http.php",
+      "dev": "sh dev.sh",
       "lint": "./vendor/bin/pint --test",
       "format": "./vendor/bin/pint",
       "check": "./vendor/bin/phpstan analyse",

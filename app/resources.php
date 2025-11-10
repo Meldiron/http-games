@@ -52,7 +52,7 @@ App::setResource('databaseId', function (Client $sdk) {
     $databaseId = $_ENV['_APP_DATABASE_OVERRIDE'];
 
     if (empty($databaseId)) {
-        $databaseId = 'local_'.date('YmdHis'); // Cache somehow, between requests
+        throw new Exception('Database ID override is currently required.');
     }
 
     return $databaseId;
