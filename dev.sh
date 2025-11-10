@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .env
+
 if [ -z "$_APP_DATABASE_OVERRIDE" ]; then
     _APP_DATABASE_OVERRIDE=local_$(date +%Y%m%d%H%M%S)
     export _APP_DATABASE_OVERRIDE
