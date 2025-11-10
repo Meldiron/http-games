@@ -22,7 +22,7 @@ class Create extends Action
             ->param('email', '', new Email)
             ->param('password', '', new Text(256, 8))
             ->param('passwordConfirmation', '', new Text(256, 8))
-            ->param('nickname', '', new Text(32, 5))
+            ->param('nickname', '', new Text(64, 5))
             ->inject('response')
             ->inject('sdkForTables')
             ->inject('databaseId')

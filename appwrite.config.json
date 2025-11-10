@@ -59,7 +59,7 @@
                     "type": "string",
                     "required": true,
                     "array": false,
-                    "size": 32,
+                    "size": 64,
                     "default": null,
                     "encrypt": false
                 },
