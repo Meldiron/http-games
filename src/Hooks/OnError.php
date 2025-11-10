@@ -21,14 +21,12 @@ class OnError extends Action
 
     public function action(\Throwable $error, Response $response): void
     {
-        if (($_ENV['_APP_LOGGING'] ?? 'disabled') === 'enabled') {
-            echo '----'.PHP_EOL;
-            echo 'Type: '.\get_class($error).PHP_EOL;
-            echo 'Message: '.$error->getMessage().PHP_EOL;
-            echo 'Trace: '.$error->getTraceAsString().PHP_EOL;
-            echo 'File: '.$error->getFile().':'.$error->getLine().PHP_EOL;
-            echo '----'.PHP_EOL;
-        }
+        \error_log('----');
+        \error_log('Type: '.\get_class($error));
+        \error_log('Message: '.$error->getMessage());
+        \error_log('Trace: '.$error->getTraceAsString());
+        \error_log('File: '.$error->getFile().':'.$error->getLine());
+        \error_log('----');
 
         $publicError = new HTTPException(HTTPException::TYPE_INTERNAL_SERVER_ERROR);
 
