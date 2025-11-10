@@ -52,7 +52,13 @@ App::setResource('databaseId', function (Client $sdk) {
     $databaseId = $_ENV['_APP_MODE'];
 
     if ($databaseId !== 'production') {
-        $databaseId = 'local_'.date('YmdHis'); // TODO: Cache between requests
+
+        $idOverride = $_ENV['_APP_DATABASE_OVERRIDE'];
+        if (empty($idOverride)) {
+            $databaseId = 'local_'.date('YmdHis');
+        } else {
+            $databaseId = $idOverride;
+        }
     }
 
     return $databaseId;

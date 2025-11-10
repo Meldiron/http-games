@@ -41,9 +41,11 @@ jobs:
         run: |
           touch .env
           echo "_APP_MODE=development" >> .env
+          echo "_APP_DATABASE_OVERRIDE=ci_${{ github.sha }}" >> .env
           echo "_APP_APPWRITE_PROJECT_ID=${{ secrets._APP_APPWRITE_PROJECT_ID }}" >> .env
           echo "_APP_APPWRITE_ENDPOINT=${{ secrets._APP_APPWRITE_ENDPOINT }}" >> .env
           echo "_APP_APPWRITE_KEY=${{ secrets._APP_APPWRITE_KEY }}" >> .env
+          echo "_APP_DATABASE_OVERRIDE=ci_${{ github.sha }}" >> .env
 
       - name: Run PHP server
         run: php -S 0.0.0.0:8000 app/http.php > server.log 2>&1 &
