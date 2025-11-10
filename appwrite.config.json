@@ -41,28 +41,19 @@
     },
     "tablesDB": [
         {
-            "$id": "main",
-            "name": "main",
+            "$id": "production",
+            "name": "production",
             "enabled": true
         }
     ],
     "tables": [
         {
-            "$id": "profiles",
+            "$id": "users",
             "$permissions": [],
-            "databaseId": "main",
-            "name": "profiles",
+            "databaseId": "production",
+            "name": "users",
             "enabled": true,
             "columns": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 32,
-                    "default": null,
-                    "encrypt": false
-                },
                 {
                     "key": "nickname",
                     "type": "string",
@@ -71,6 +62,89 @@
                     "size": 32,
                     "default": null,
                     "encrypt": false
+                },
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "passwordHash",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 256,
+                    "default": null,
+                    "encrypt": true
+                },
+                {
+                    "key": "token",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": true
+                }
+            ],
+            "indexes": []
+        }
+    ],
+    "databases": [
+        {
+            "$id": "production",
+            "name": "production",
+            "enabled": true
+        }
+    ],
+    "collections": [
+        {
+            "$id": "users",
+            "$permissions": [],
+            "databaseId": "production",
+            "name": "users",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "nickname",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 32,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "passwordHash",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 256,
+                    "default": null,
+                    "encrypt": true
+                },
+                {
+                    "key": "token",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": true
                 }
             ],
             "indexes": []

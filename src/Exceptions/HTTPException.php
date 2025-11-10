@@ -16,15 +16,15 @@ class HTTPException extends \Exception
 
     public const TYPE_BAD_REQUEST = 'bad_request';
 
-    public const TYPE_EMAIL_ALREADY_EXISTS = 'email_already_exists';
+    public const TYPE_USER_ALREADY_EXISTS = 'user_already_exists';
 
     const EXCEPTIONS = [
         self::TYPE_PASSWORDS_DO_NOT_MATCH => [
             'message' => 'Passwords do not match.',
             'code' => 400,
         ],
-        self::TYPE_NICKNAME_ALREADY_EXISTS => [
-            'message' => 'Nickname already exists.',
+        self::TYPE_USER_ALREADY_EXISTS => [
+            'message' => 'User with this email or nickname already exists.',
             'code' => 409,
         ],
         self::TYPE_UNKNOWN => [
@@ -42,10 +42,6 @@ class HTTPException extends \Exception
         self::TYPE_BAD_REQUEST => [
             'message' => 'Your request body is not valid.',
             'code' => 400,
-        ],
-        self::TYPE_EMAIL_ALREADY_EXISTS => [
-            'message' => 'User with this email already exists.',
-            'code' => 409,
         ],
     ];
 

@@ -5,7 +5,6 @@ namespace HTTPGames\Users;
 use Appwrite\ID;
 use Appwrite\Query;
 use Appwrite\Services\TablesDB;
-use Appwrite\Services\Users;
 use HTTPGames\Exceptions\HTTPException;
 use HTTPGames\Validators\Email;
 use Utopia\Platform\Action;
@@ -25,8 +24,8 @@ class Create extends Action
             ->param('passwordConfirmation', '', new Text(256, 8))
             ->param('nickname', '', new Text(32, 5))
             ->inject('response')
-            ->inject('sdkForUsers')
             ->inject('sdkForTables')
+            ->inject('databaseId')
             ->callback($this->action(...));
     }
 
@@ -36,78 +35,48 @@ class Create extends Action
         string $passwordConfirmation,
         string $nickname,
         Response $response,
-        Users $sdkForUsers,
-        TablesDB $sdkForTables
+        TablesDB $sdkForTables,
+        string $databaseId
     ): void {
         if ($password !== $passwordConfirmation) {
             throw new HTTPException(HTTPException::TYPE_PASSWORDS_DO_NOT_MATCH);
         }
 
-        // TODO: Rework, only use sdkForTables
-
-        $profiles = $sdkForTables->listRows(
-            databaseId: 'main',
-            tableId: 'profiles',
+        $users = $sdkForTables->listRows(
+            databaseId: $databaseId,
+            tableId: 'users',
             queries: [
-                Query::equal('nickname', $nickname),
-                Query::limit(1),
-            ]
-        );
-
-        if ($profiles['total'] > 0) {
-            throw new HTTPException(HTTPException::TYPE_NICKNAME_ALREADY_EXISTS);
-        }
-
-        $users = $sdkForUsers->list(
-            queries: [
-                Query::equal('email', $email),
+                Query::or([
+                    Query::equal('email', $email),
+                    Query::equal('nickname', $nickname),
+                ]),
                 Query::limit(1),
             ]
         );
 
         if ($users['total'] > 0) {
-            throw new HTTPException(HTTPException::TYPE_EMAIL_ALREADY_EXISTS);
+            throw new HTTPException(HTTPException::TYPE_USER_ALREADY_EXISTS);
         }
 
         $token = 'sk_'.ID::unique(64);
 
-        try {
-            $user = $sdkForUsers->create(
-                userId: ID::unique(),
-                email: $email,
-                password: $password,
-                name: $nickname,
-            );
-
-            $profile = $sdkForTables->createRow(
-                databaseId: 'main',
-                tableId: 'profiles2',
-                rowId: ID::unique(),
-                data: [
-                    'userId' => $user['$id'],
-                    'nickname' => $nickname,
-                    'token' => $token,
-                ]
-            );
-        } catch (\Throwable $err) {
-            try {
-                if (isset($user)) {
-                    $sdkForUsers->delete($user['$id']);
-                }
-            } catch (\Throwable $err) {
-                // Just a cleanup
-            }
-
-            throw $err;
-        }
+        $user = $sdkForTables->createRow(
+            databaseId: $databaseId,
+            tableId: 'users',
+            rowId: ID::unique(),
+            data: [
+                'nickname' => $nickname,
+                'email' => $email,
+                'passwordHash' => \password_hash($password, PASSWORD_ARGON2I),
+                'token' => $token,
+            ]
+        );
 
         $response->json([
             'id' => $user['$id'],
             'email' => $user['email'],
-            'nickname' => $profile['nickname'],
-            'token' => $profile['token'],
+            'nickname' => $user['nickname'],
+            'token' => $user['token'],
         ]);
-
-        // TODO: Tests, new DB each run
     }
 }
