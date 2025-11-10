@@ -2,9 +2,19 @@
 
 use Appwrite\AppwriteException;
 use Appwrite\Client;
+use Appwrite\Query;
 use Appwrite\Services\TablesDB;
 use Utopia\App;
-use Utopia\CLI\Console;
+
+App::setResource('databaseId', function () {
+    $databaseId = $_ENV['_APP_DATABASE_OVERRIDE'];
+
+    if (empty($databaseId)) {
+        throw new Exception('Database ID override is currently required.');
+    }
+
+    return $databaseId;
+});
 
 App::setResource('sdk', function () {
     $sdk = new Client;
@@ -18,42 +28,42 @@ App::setResource('sdk', function () {
 });
 
 App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
-    $tables = new TablesDB($sdk);
+    $sdkForTables = new TablesDB($sdk);
 
     try {
-        $tables->get($databaseId);
+        $sdkForTables->get($databaseId);
     } catch (AppwriteException $err) {
         if ($err->getType() === 'database_not_found') {
-            // Create database using Appwrite CLI
-            $bash = <<<BASH
-                mkdir -p /tmp/$databaseId
-                cp ./appwrite.config.json /tmp/$databaseId/appwrite.config.json
-                cd /tmp/$databaseId
-                sed -i '' 's/production/$databaseId/g' appwrite.config.json
-                appwrite push tables --all
-            BASH;
 
-            $stdout = '';
-            $stderr = '';
-            $exitCode = Console::execute($bash, '', $stdout, $stderr, 15);
+            // Setup database schema
+            $sdkForTables->create(databaseId: $databaseId, name: $databaseId);
+            $sdkForTables->createTable($databaseId, 'users', 'Users');
+            $sdkForTables->createStringColumn($databaseId, 'users', 'email', 255, required: true);
+            $sdkForTables->createStringColumn($databaseId, 'users', 'passwordHash', 255, required: true, encrypt: true);
+            $sdkForTables->createStringColumn($databaseId, 'users', 'token', 255, required: true, encrypt: true);
+            $sdkForTables->createStringColumn($databaseId, 'users', 'nickname', 255, required: true);
 
-            if ($exitCode !== 0 || ! empty($stderr)) {
-                throw new Exception('Failed to create database with exit code '.$exitCode.': '.$stderr.' ('.$stdout.')');
+            $attempts = 0;
+            while (true) {
+                $rows = $sdkForTables->listColumns($databaseId, 'users', [
+                    Query::notEqual('status', 'available'),
+                    Query::limit(1),
+                ]);
+                if ($rows['total'] === 0) {
+                    break;
+                }
+
+                $attempts++;
+                if ($attempts > 15) {
+                    throw new Exception('Database not setup properly.');
+                }
+
+                \sleep(1);
             }
         } else {
             throw $err;
         }
     }
 
-    return $tables;
+    return $sdkForTables;
 }, ['sdk', 'databaseId']);
-
-App::setResource('databaseId', function (Client $sdk) {
-    $databaseId = $_ENV['_APP_DATABASE_OVERRIDE'];
-
-    if (empty($databaseId)) {
-        throw new Exception('Database ID override is currently required.');
-    }
-
-    return $databaseId;
-}, ['sdk']);
