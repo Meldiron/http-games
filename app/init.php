@@ -17,7 +17,6 @@ $envVars = [
     '_APP_APPWRITE_ENDPOINT',
     '_APP_APPWRITE_KEY',
     '_APP_APPWRITE_PROJECT_ID',
-    '_APP_DATABASE_OVERRIDE',
 ];
 
 foreach ($envVars as $envVar) {
