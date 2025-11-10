@@ -5,3 +5,5 @@ parameters:
         - app
     bootstrapFiles:
         - vendor/autoload.php
+    scanFiles:
+        - vendor/appwrite/appwrite/src/Appwrite/Services/TablesDb.php
