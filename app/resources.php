@@ -49,16 +49,10 @@ App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
 }, ['sdk', 'databaseId']);
 
 App::setResource('databaseId', function (Client $sdk) {
-    $databaseId = $_ENV['_APP_MODE'];
+    $databaseId = $_ENV['_APP_DATABASE_OVERRIDE'];
 
-    if ($databaseId !== 'production') {
-
-        $idOverride = $_ENV['_APP_DATABASE_OVERRIDE'];
-        if (empty($idOverride)) {
-            $databaseId = 'local_'.date('YmdHis');
-        } else {
-            $databaseId = $idOverride;
-        }
+    if (empty($databaseId)) {
+        $databaseId = 'local_'.date('YmdHis'); // Cache somehow, between requests
     }
 
     return $databaseId;

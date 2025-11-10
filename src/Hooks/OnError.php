@@ -3,7 +3,6 @@
 namespace HTTPGames\Hooks;
 
 use HTTPGames\Exceptions\HTTPException;
-use Utopia\App;
 use Utopia\Exception as UtopiaException;
 use Utopia\Platform\Action;
 use Utopia\Response;
@@ -22,7 +21,7 @@ class OnError extends Action
 
     public function action(\Throwable $error, Response $response): void
     {
-        if (App::getMode() !== App::MODE_TYPE_PRODUCTION) {
+        if (($_ENV['_APP_LOGGING'] ?? 'disabled') === 'enabled') {
             echo '----'.PHP_EOL;
             echo 'Type: '.\get_class($error).PHP_EOL;
             echo 'Message: '.$error->getMessage().PHP_EOL;
@@ -38,8 +37,12 @@ class OnError extends Action
         }
 
         if ($error instanceof UtopiaException) {
-            $publicError = $error;
-            $type = HTTPException::TYPE_BAD_REQUEST;
+            if ($error->getCode() === 404) {
+                $publicError = new HTTPException(HTTPException::TYPE_PATH_NOT_FOUND);
+            } else {
+                $publicError = $error;
+                $type = HTTPException::TYPE_BAD_REQUEST;
+            }
         }
 
         $code = $publicError->getCode();
