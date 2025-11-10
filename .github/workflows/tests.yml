@@ -46,7 +46,7 @@ jobs:
           echo "_APP_APPWRITE_KEY=${{ secrets._APP_APPWRITE_KEY }}" >> .env
 
       - name: Run PHP server
-        run: php -S 0.0.0.0:8000 app/http.php &> server.log
+        run: php -S 0.0.0.0:8000 app/http.php > server.log 2>&1 &
 
       - name: Wait for server to be ready
         run: |
