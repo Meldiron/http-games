@@ -36,9 +36,17 @@ jobs:
 
       - name: Run static analysis
         run: composer check
+        
+      - name: Prepare environment
+        run: |
+          touch .env
+          echo "_APP_MODE=development" >> .env
+          echo "_APP_APPWRITE_PROJECT_ID=${{ secrets._APP_APPWRITE_PROJECT_ID }}" >> .env
+          echo "_APP_APPWRITE_ENDPOINT=${{ secrets._APP_APPWRITE_ENDPOINT }}" >> .env
+          echo "_APP_APPWRITE_KEY=${{ secrets._APP_APPWRITE_KEY }}" >> .env
 
       - name: Run PHP server
-        run: php -S 0.0.0.0:8000 app/http.php &
+        run: php -S 0.0.0.0:8000 app/http.php &> server.log
 
       - name: Wait for server to be ready
         run: |
@@ -53,6 +61,10 @@ jobs:
 
       - name: Run tests
         run: composer test
+        
+      - name: Print logs
+        run: cat server.log
+        if: failure()
 
   docs:
     name: Docs (lint, build)
