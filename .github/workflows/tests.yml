@@ -30,25 +30,6 @@ jobs:
 
       - name: Run static analysis
         run: composer check
-        
-      - name: Setup Appwrite
-        run: |
-          mkdir -p /tmp/appwrite
-          cd /tmp/appwrite
-          curl -o docker-compose.yml https://appwrite.io/install/compose
-          curl -o .env https://appwrite.io/install/env
-          docker compose up -d
-
-      - name: Wait for Appwrite
-        run: |
-          for i in {1..30}; do
-            if curl -f http://localhost/v1/health > /dev/null 2>&1; then
-              echo "Appwrite is ready"
-              break
-            fi
-            echo "Waiting for Appwrite... ($i/30)"
-            sleep 1
-          done
 
       - name: Prepare environment
         run: |
