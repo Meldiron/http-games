@@ -36,7 +36,6 @@ class Get extends Action
             'id' => $user->getId(),
             'email' => $user->getAttribute('email'),
             'nickname' => $user->getAttribute('nickname'),
-            'token' => $user->getAttribute('token'),
         ]);
     }
 }

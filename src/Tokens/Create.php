@@ -1,7 +1,8 @@
 <?php
 
-namespace HTTPGames\Sessions;
+namespace HTTPGames\Tokens;
 
+use Appwrite\ID;
 use Appwrite\Query;
 use Appwrite\Services\TablesDB;
 use HTTPGames\Exceptions\HTTPException;
@@ -16,8 +17,8 @@ class Create extends Action
     {
         $this
             ->setHttpMethod('POST')
-            ->setHttpPath('/v1/sessions')
-            ->desc('Sign in as user')
+            ->setHttpPath('/v1/tokens')
+            ->desc('Create new token')
             ->param('email', '', new Email)
             ->param('password', '', new Text(256, 8))
             ->inject('response')
@@ -54,12 +55,18 @@ class Create extends Action
             throw new HTTPException(HTTPException::TYPE_WRONG_CREDENTIALS);
         }
 
+        $token = 'sk_'.ID::unique(64);
+
+        $row = $sdkForTables->createRow($databaseId, 'tokens', ID::unique(), [
+            'userId' => $user['$id'],
+            'secret' => $token,
+        ]);
+
         $response->setStatusCode(Response::STATUS_CODE_CREATED);
         $response->json([
-            'id' => $user['$id'],
-            'email' => $user['email'],
-            'nickname' => $user['nickname'],
-            'token' => $user['token'],
+            'id' => $row['$id'],
+            'userId' => $row['userId'],
+            'secret' => $row['secret'],
         ]);
     }
 }

@@ -1,4 +1,4 @@
-# SETUP: Create user
+# SETUP: Create user and his token
 POST http://localhost:8000/v1/users
 [Options]
 variable: user_nickname={{newUuid}}
@@ -12,7 +12,15 @@ variable: user_email={{user_nickname}}@httpgames.com
 HTTP 201
 [Captures]
 user_id: jsonpath "$.id"
-user_token: jsonpath "$.token"
+
+POST http://localhost:8000/v1/tokens
+{
+  "email": "{{user_email}}",
+  "password": "password"
+}
+HTTP 201
+[Captures]
+user_token: jsonpath "$.secret"
 
 # No auth header
 GET http://localhost:8000/v1/users/{{user_id}}
@@ -27,6 +35,13 @@ HTTP 401
 [Asserts]
 jsonpath "$.type" == "unauthorized"
 
+# Using nickname instead of id
+GET http://localhost:8000/v1/users/{{user_nickname}}
+Authorization: Bearer {{user_token}}
+HTTP 401
+[Asserts]
+jsonpath "$.type" == "forbidden"
+
 # Correct auth header
 GET http://localhost:8000/v1/users/{{user_id}}
 Authorization: Bearer {{user_token}}
@@ -35,9 +50,8 @@ HTTP 200
 jsonpath "$.id" == "{{user_id}}"
 jsonpath "$.email" == "{{user_email}}"
 jsonpath "$.nickname" == "{{user_nickname}}"
-jsonpath "$.token" == "{{user_token}}"
 
-# SETUP: Create second user
+# SETUP: Create second user and his token
 POST http://localhost:8000/v1/users
 [Options]
 variable: user2_nickname={{newUuid}}
@@ -51,7 +65,15 @@ variable: user2_email={{user2_nickname}}@httpgames.com
 HTTP 201
 [Captures]
 user2_id: jsonpath "$.id"
-user2_token: jsonpath "$.token"
+
+POST http://localhost:8000/v1/tokens
+{
+  "email": "{{user2_email}}",
+  "password": "password"
+}
+HTTP 201
+[Captures]
+user2_token: jsonpath "$.secret"
 
 # User 1 fails to get user 2 account
 GET http://localhost:8000/v1/users/{{user2_id}}

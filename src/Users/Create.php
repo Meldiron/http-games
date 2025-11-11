@@ -7,6 +7,7 @@ use Appwrite\Query;
 use Appwrite\Services\TablesDB;
 use HTTPGames\Exceptions\HTTPException;
 use HTTPGames\Validators\Email;
+use HTTPGames\Validators\UID;
 use Utopia\Platform\Action;
 use Utopia\Response;
 use Utopia\Validator\Text;
@@ -22,7 +23,7 @@ class Create extends Action
             ->param('email', '', new Email)
             ->param('password', '', new Text(256, 8))
             ->param('passwordConfirmation', '', new Text(256, 8))
-            ->param('nickname', '', new Text(64, 5))
+            ->param('nickname', '', new UID)
             ->inject('response')
             ->inject('sdkForTables')
             ->inject('databaseId')
@@ -58,8 +59,6 @@ class Create extends Action
             throw new HTTPException(HTTPException::TYPE_USER_ALREADY_EXISTS);
         }
 
-        $token = 'sk_'.ID::unique(64);
-
         $user = $sdkForTables->createRow(
             databaseId: $databaseId,
             tableId: 'users',
@@ -68,7 +67,6 @@ class Create extends Action
                 'nickname' => $nickname,
                 'email' => $email,
                 'passwordHash' => \password_hash($password, PASSWORD_ARGON2I),
-                'token' => $token,
             ]
         );
 
@@ -77,7 +75,6 @@ class Create extends Action
             'id' => $user['$id'],
             'email' => $user['email'],
             'nickname' => $user['nickname'],
-            'token' => $user['token'],
         ]);
     }
 }

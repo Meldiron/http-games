@@ -56,6 +56,18 @@ HTTP 400
 [Asserts]
 jsonpath "$.type" == "bad_request"
 
+# Bad characters in nick
+POST http://localhost:8000/v1/users
+{
+  "email": "test@httpgames.com",
+  "password": "password",
+  "passwordConfirmation": "password",
+  "nickname": "Meldiron the Second"
+}
+HTTP 400
+[Asserts]
+jsonpath "$.type" == "bad_request"
+
 # Invalid pass confirmation
 POST http://localhost:8000/v1/users
 {
@@ -99,8 +111,6 @@ jsonpath "$.id" not isEmpty
 jsonpath "$.id" isString
 jsonpath "$.email" == "{{user_email}}"
 jsonpath "$.nickname" == "{{user_nickname}}"
-jsonpath "$.token" not isEmpty
-jsonpath "$.token" startsWith "sk_"
 
 # Duplicate email
 POST http://localhost:8000/v1/users

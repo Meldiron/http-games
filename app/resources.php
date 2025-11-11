@@ -4,6 +4,7 @@ use Appwrite\AppwriteException;
 use Appwrite\Client;
 use Appwrite\Query;
 use Appwrite\Services\TablesDB;
+use HTTPGames\Exceptions\HTTPException;
 use Utopia\App;
 use Utopia\Database\Document;
 use Utopia\Request;
@@ -18,20 +19,35 @@ App::setResource('user', function (Request $request, string $databaseId, TablesD
         return new Document;
     }
 
-    $users = $sdkForTables->listRows(
+    $tokens = $sdkForTables->listRows(
         databaseId: $databaseId,
-        tableId: 'users',
+        tableId: 'tokens',
         queries: [
-            Query::equal('token', $token),
+            Query::equal('secret', $token),
             Query::limit(1),
         ]
     );
 
-    if ($users['total'] <= 0) {
+    if ($tokens['total'] <= 0) {
         return new Document;
     }
 
-    $user = $users['rows'][0];
+    $token = $tokens['rows'][0];
+    $userId = $token['userId'] ?? '';
+
+    try {
+        $user = $sdkForTables->getRow(
+            databaseId: $databaseId,
+            tableId: 'users',
+            rowId: $userId
+        );
+    } catch (AppwriteException $err) {
+        // TODO: TO be manually tested
+        if ($err->getType() === 'row_not_found') {
+            throw new HTTPException(HTTPException::TYPE_USER_NOT_FOUND);
+        }
+        throw $err;
+    }
 
     return new Document($user);
 
@@ -65,22 +81,31 @@ App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
         $sdkForTables->get($databaseId);
     } catch (AppwriteException $err) {
         if ($err->getType() === 'database_not_found') {
-
             // Setup database schema
             $sdkForTables->create(databaseId: $databaseId, name: $databaseId);
+
             $sdkForTables->createTable($databaseId, 'users', 'Users');
             $sdkForTables->createStringColumn($databaseId, 'users', 'email', 255, required: true);
             $sdkForTables->createStringColumn($databaseId, 'users', 'passwordHash', 255, required: true, encrypt: true);
-            $sdkForTables->createStringColumn($databaseId, 'users', 'token', 255, required: true);
             $sdkForTables->createStringColumn($databaseId, 'users', 'nickname', 255, required: true);
 
+            $sdkForTables->createTable($databaseId, 'tokens', 'Tokens');
+            $sdkForTables->createStringColumn($databaseId, 'tokens', 'userId', 255, required: true);
+            $sdkForTables->createStringColumn($databaseId, 'tokens', 'secret', 255, required: true);
+
+            $tables = ['users', 'tokens'];
             $attempts = 0;
             while (true) {
-                $rows = $sdkForTables->listColumns($databaseId, 'users', [
-                    Query::notEqual('status', 'available'),
-                    Query::limit(1),
-                ]);
-                if ($rows['total'] === 0) {
+                $processing = 0;
+                foreach ($tables as $table) {
+                    $rows = $sdkForTables->listColumns($databaseId, $table, [
+                        Query::notEqual('status', 'available'),
+                        Query::limit(1),
+                    ]);
+                    $processing += $rows['total'];
+                }
+
+                if ($processing === 0) {
                     break;
                 }
 

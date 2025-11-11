@@ -1,13 +1,13 @@
 ---
 title: Authentication
-description: Register an account, sign into your account, and obtain a token.
+description: Register an account, sign into the account, and obtain a token.
 ---
 
 ## Preparation
 
 You don't need to setup anything! Any runtime or language you are already using is capable of sending HTTP requests, so simply use what you are familiar with.
 
-All examples will be written as CURL requests. This format is easy to run in terminal, import into HTTP clients, and all AI agents understand it (so you can easily convert it into your preferred programming language).
+All examples will be written as CURL requests. This format is easy to run in terminal, import into HTTP clients, and all AI agents understand it, so you can easily convert it into your preferred programming language.
 
 Here is example of a CURL request:
 
@@ -35,9 +35,9 @@ curl \
   -H 'Content-Type: application/json' \
   -d '{
     "email": "user@example.com",
+    "nickname": "User123",
     "password": "password",
-    "passwordConfirmation": "password",
-    "nickname": "User123"
+    "passwordConfirmation": "password"
   }' \
   https://api.http-games.almostapps.eu/v1/users
 ```
@@ -48,11 +48,11 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
   <Accordion title="Response">
     ### Bad request (400)
       
-    Error usually thrown when body is missing or invalid. Common reasons are password confirmation missmatch, too short password, or invalid email address.
+    Error usually thrown when body is missing or invalid. Common reasons are password confirmation missmatch, too short password and nickname, or invalid email address.
     
     ### Conflict (409)
     
-    If user with same email or nickname already exists, you will receive a conflict error.
+    Error caused by using email or nickname that is linked to an already existing account.
     
     ### Created (201)
     
@@ -60,7 +60,7 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
     
     ```json
     {
-      "id": "user_id",
+      "id": "6912ef18b...",
       "email": "user@example.com",
       "nickname": "User123",
       "token": "sk_Guei2HJgU..."
@@ -69,13 +69,11 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
   </Accordion>
 </Accordions>
 
-Token is very important! If you are seasoned developer, you can now skip ahead to [Authentication](#authentication) section. But if you are new, continue to next section.
+## Obtaining a token
 
-## Signing in
+Ensure you have [signed up](#signing-up) first, and you remember your email and password.
 
-Ensure you have signed up first, and you remember your email and password.
-
-To sign in, send an HTTP request with your credentials.
+To obtain a new token, send an HTTP request with your credentials.
 
 ```bash
 curl \
@@ -85,7 +83,7 @@ curl \
     "email": "user@example.com",
     "password": "password"
   }' \
-  https://api.http-games.almostapps.eu/v1/sessions
+  https://api.http-games.almostapps.eu/v1/tokens
 ```
 
 <Accordions type="single">
@@ -96,39 +94,42 @@ curl \
     
     ### Created (201)
     
-    Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
+    A token has been created successfully. Response includes detail about your token, your token's secret.
     
     ```json
     {
-      "id": "67c0eaa...",
-      "email": "user@example.com",
-      "nickname": "User123",
-      "token": "sk_Guei2HJgU..."
+      "id": "6394ab479...",
+      "userId": "6912ef18b...",
+      "secret": "sk_Guei2HJgU..."
     }
     ```
+    
+    Make sure to note down the token's secret, you will need it in the future.
   </Accordion>
 </Accordions>
 
-If you haven't yet obtained a token, follow [Signing up](#signing-up) and [Signing in](#signing-in) sections.
+## Sending authorized requests
 
-From now on, you will need to provide your token in `Authorization` header for all requests that require authentication.
+In all requests sent when playing games, you will need to provide your token's secret in `Authorization` header.
 
 ```http
-Authentication: Bearer sk_Guei2HJgU...
+Authorization: Bearer sk_Guei2HJgU...
 ```
 
-To test this out, you can send a request to get details about your account. This request can only succeed if you have a valid token, and provide it properly.
+If you haven't yet obtained a token, follow [Signing up](#signing-up) and [Obtaining a token](#obtaining-a-token) sections.
+
+To test this out, you can send a request to get details about your account. This request can only succeed if you have a valid token of a valid user.
 
 ```bash
 curl \
   -X GET \
-  -H 'Authentication: Bearer sk_Guei2HJgU...' \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
   https://api.http-games.almostapps.eu/v1/users/[YOUR_USER_ID]
 ```
 
 <Callout>
   Remember to update URL with your user ID. If you don't remember it, refer to
-  [Signing in](#signing-in) section.
+  [Obtaining a token](#obtaining-a-token) section, since a response of a new token includes your user ID too.
 </Callout>
 
 <Accordions type="single">
@@ -139,7 +140,7 @@ curl \
     
     ### Forbidden (403)
     
-    Error thrown when the token is valid, but it's a token of another user. You might have not set your user ID in the URL properly.
+    Error thrown when the token is valid, but it's a token of another user. You probably sent request with wrong user ID in the URL path.
     
     ### Success (200)
     
@@ -149,8 +150,7 @@ curl \
     {
       "id": "67c0eaa...",
       "email": "user@example.com",
-      "nickname": "User123",
-      "token": "sk_Guei2HJgU..."
+      "nickname": "User123"
     }
     ```
   </Accordion>

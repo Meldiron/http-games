@@ -24,8 +24,9 @@ class UID extends Validator
     public function __construct(
         protected readonly bool $allowInternal = false,
         protected readonly int $maxLength = 36,
+        protected readonly int $minLength = 5,
     ) {
-        $this->message = 'Parameter must contain at most '.$this->maxLength.' chars. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can\'t start with a special char';
+        $this->message = 'Parameter must contain at least '.$this->minLength.' chars, and at most '.$this->maxLength.' chars. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can\'t start with a special char';
     }
 
     /**
@@ -69,6 +70,11 @@ class UID extends Validator
 
         // At most maxLength chars
         if (\mb_strlen($value) > $this->maxLength) {
+            return false;
+        }
+
+        // At least minLength chars
+        if (\mb_strlen($value) < $this->minLength) {
             return false;
         }
 

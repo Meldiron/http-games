@@ -24,7 +24,13 @@ class HTTPException extends \Exception
 
     public const TYPE_FORBIDDEN = 'forbidden';
 
+    public const TYPE_USER_NOT_FOUND = 'user_not_found';
+
     const EXCEPTIONS = [
+        self::TYPE_USER_NOT_FOUND => [
+            'message' => 'User not found.',
+            'code' => 404,
+        ],
         self::TYPE_UNAUTHORIZED => [
             'message' => 'You are missing token in Authorization header.',
             'code' => 401,
