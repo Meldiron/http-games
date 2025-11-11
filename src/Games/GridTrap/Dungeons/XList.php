@@ -61,7 +61,7 @@ class XList extends Action
 
         $cursorNext = \end($dungeons['rows'])['$id'] ?? null;
         $cursorPrevious = \reset($dungeons['rows'])['$id'] ?? null;
-        
+
         $response->json([
             'total' => $dungeons['total'],
             'cursorNext' => $cursorNext ? 'after:'.$cursorNext : null,
