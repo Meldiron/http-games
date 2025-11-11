@@ -7,7 +7,7 @@
         }
     },
     "scripts": {
-      "dev": "COMPOSER_PROCESS_TIMEOUT=99999 sh dev.sh",
+      "dev": "sh dev.sh",
       "dev:reset": "kill $(lsof -t -i:8000)",
       "lint": "./vendor/bin/pint --test",
       "format": "./vendor/bin/pint",

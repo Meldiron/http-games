@@ -2,6 +2,8 @@
 
 use Appwrite\AppwriteException;
 use Appwrite\Client;
+use Appwrite\Enums\RelationMutate;
+use Appwrite\Enums\RelationshipType;
 use Appwrite\Query;
 use Appwrite\Services\TablesDB;
 use HTTPGames\Exceptions\HTTPException;
@@ -92,6 +94,28 @@ App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
             $sdkForTables->createTable($databaseId, 'tokens', 'Tokens');
             $sdkForTables->createStringColumn($databaseId, 'tokens', 'userId', 255, required: true);
             $sdkForTables->createStringColumn($databaseId, 'tokens', 'secret', 255, required: true);
+
+            $sdkForTables->createTable($databaseId, 'gridTrapTiles', 'Grid Trap - Tiles');
+            $sdkForTables->createPointColumn($databaseId, 'gridTrapTiles', 'position', required: true);
+            $sdkForTables->createStringColumn($databaseId, 'gridTrapTiles', 'type', 255, required: true);
+            // dungeonId also available using relationship originated from gridTrapDungeons
+
+            $sdkForTables->createTable($databaseId, 'gridTrapDungeons', 'Grid Trap - Dungeons');
+            $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'userId', 255, required: true);
+            $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'size', 15, required: true);
+            $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'hardcore', required: true);
+            $sdkForTables->createPointColumn($databaseId, 'gridTrapDungeons', 'playerPosition', required: true);
+            $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'playerTrapped', required: true);
+            $sdkForTables->createRelationshipColumn(
+                $databaseId,
+                tableId: 'gridTrapDungeons',
+                relatedTableId: 'gridTrapTiles',
+                type: RelationshipType::ONETOMANY(),
+                twoWay: true,
+                key: 'tiles',
+                twoWayKey: 'dungeonId',
+                onDelete: RelationMutate::CASCADE(),
+            );
 
             $tables = ['users', 'tokens'];
             $attempts = 0;
