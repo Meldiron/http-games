@@ -59,12 +59,19 @@ game_id: jsonpath "$.id"
 
 POST http://localhost:8000/v1/games/grid-trap/dungeons
 Authorization: Bearer {{token}}
+{
+    "size": "7x7"
+}
 HTTP 201
 [Captures]
 game2_id: jsonpath "$.id"
 
 POST http://localhost:8000/v1/games/grid-trap/dungeons
 Authorization: Bearer {{token}}
+{
+    "size": "7x7",
+    "hardcore": true
+}
 HTTP 201
 [Captures]
 game3_id: jsonpath "$.id"
