@@ -34,11 +34,15 @@ jobs:
       - name: Prepare environment
         run: |
           touch .env
-          echo "_APP_LOGGING=disabled" >> .env
           echo "_APP_DATABASE_OVERRIDE=ci_$(date +%Y%m%d%H%M%S)" >> .env
           echo "_APP_APPWRITE_PROJECT_ID=${{ secrets._APP_APPWRITE_PROJECT_ID }}" >> .env
           echo "_APP_APPWRITE_ENDPOINT=${{ secrets._APP_APPWRITE_ENDPOINT }}" >> .env
           echo "_APP_APPWRITE_KEY=${{ secrets._APP_APPWRITE_KEY }}" >> .env
+          
+      - name: Install FrankPHP
+        run: |
+          curl https://frankenphp.dev/install.sh | sh
+          sudo mv frankenphp /usr/local/bin/
 
       - name: Run PHP server
         run: composer dev > server.log 2>&1 &

@@ -9,4 +9,4 @@ else
     export _APP_DATABASE_OVERRIDE
 fi
 
-php -S 0.0.0.0:8000 app/http.php
+frankenphp run

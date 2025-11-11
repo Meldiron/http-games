@@ -2,6 +2,7 @@
 
 namespace HTTPGames\Hooks;
 
+use Appwrite\AppwriteException;
 use HTTPGames\Exceptions\HTTPException;
 use Utopia\Exception as UtopiaException;
 use Utopia\Platform\Action;
@@ -11,8 +12,7 @@ class OnError extends Action
 {
     public function __construct()
     {
-        $this
-            ->setType(Action::TYPE_ERROR)
+        $this->setType(Action::TYPE_ERROR)
             ->groups(['*'])
             ->inject('error')
             ->inject('response')
@@ -26,9 +26,15 @@ class OnError extends Action
         \error_log('Message: '.$error->getMessage());
         \error_log('Trace: '.$error->getTraceAsString());
         \error_log('File: '.$error->getFile().':'.$error->getLine());
+        if ($error instanceof AppwriteException) {
+            \error_log('Type: '.$error->getType());
+        }
+
         \error_log('----');
 
-        $publicError = new HTTPException(HTTPException::TYPE_INTERNAL_SERVER_ERROR);
+        $publicError = new HTTPException(
+            HTTPException::TYPE_INTERNAL_SERVER_ERROR,
+        );
 
         if ($error instanceof HTTPException) {
             $publicError = $error;
@@ -36,7 +42,9 @@ class OnError extends Action
 
         if ($error instanceof UtopiaException) {
             if ($error->getCode() === 404) {
-                $publicError = new HTTPException(HTTPException::TYPE_PATH_NOT_FOUND);
+                $publicError = new HTTPException(
+                    HTTPException::TYPE_PATH_NOT_FOUND,
+                );
             } else {
                 $publicError = $error;
                 $type = HTTPException::TYPE_BAD_REQUEST;

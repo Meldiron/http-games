@@ -1,0 +1,13 @@
+{
+	frankenphp {
+		php_ini error_reporting 0
+		php_ini display_errors Off
+		php_ini display_startup_errors Off
+	}
+}
+
+http://localhost:8000 {
+    encode zstd br gzip
+	php_server
+	rewrite * /app/http.php
+}
