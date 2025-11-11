@@ -37,7 +37,7 @@ jobs:
           cd /tmp/appwrite
           curl -o docker-compose.yml https://appwrite.io/install/compose
           curl -o .env https://appwrite.io/install/env
-          docker-compose up -d
+          docker compose up -d
 
       - name: Wait for Appwrite
         run: |
