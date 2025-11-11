@@ -152,7 +152,7 @@ class Create extends Action
             'playerPosition' => [$startX, $startY],
             'seed' => $seed,
             'seedCustomized' => $seedCustomized,
-            'tiles' => \array_map(function ($tile) {
+            'tiles' => \array_map(function (Document $tile) {
                 return [
                     'position' => [$tile->getAttribute('x'), $tile->getAttribute('y')],
                     'type' => $tile->getAttribute('type'),
@@ -177,9 +177,9 @@ class Create extends Action
      * Visualize the dungeon using emojis.
      * TODO: Remove this once not needed anymore
      *
-     * @param array<{x, y, type}> $tiles The tiles of the dungeon.
+     * @param  array<Document>  $tiles  The tiles of the dungeon.
      */
-    protected function visualizeDungeon(array $tiles)
+    protected function visualizeDungeon(array $tiles): string
     {
         $emojis = [
             'wall' => '🟫',

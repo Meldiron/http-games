@@ -130,33 +130,6 @@ class Generator
     }
 
     /**
-     * @return array<int, array{int, int}>
-     */
-    private function getNeighbors(int $x, int $y): array
-    {
-        $neighbors = [];
-        $directions = [
-            [0, 1],  // up
-            [0, -1], // down
-            [1, 0],  // right
-            [-1, 0],  // left
-        ];
-
-        foreach ($directions as $dir) {
-            $newX = $x + $dir[0];
-            $newY = $y + $dir[1];
-
-            // Check if neighbor is within bounds
-            if ($newX >= $this->minX && $newX <= $this->maxX &&
-                $newY >= $this->minY && $newY <= $this->maxY) {
-                $neighbors[] = [$newX, $newY];
-            }
-        }
-
-        return $neighbors;
-    }
-
-    /**
      * @param  array<string, array{int, int}>  $cameFrom
      * @param  array{int, int}  $current
      * @return array<int, array{int, int}>
