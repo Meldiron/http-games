@@ -1,0 +1,14 @@
+---
+title: Visualizing the environment
+description: Understand the dungeon tiles and player.
+---
+
+<Callout>
+    If you haven't obtained a token yet, check out [Authentication](/docs/basics/authentication) documentation.
+</Callout>
+
+/v1/games/grid-trap/dungeons/:dungeonId/player
+- x,y,isCrawling
+
+/v1/games/grid-trap/dungeons/:dungeonId/tiles
+- list, x, y, type (wall, ground, enterance, rope)

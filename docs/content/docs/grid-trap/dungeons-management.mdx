@@ -1,0 +1,98 @@
+---
+title: Dungeons management
+description: Start a new game by generating a dungeon.
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+<Callout>
+    If you haven't obtained a token yet, check out [Authentication](/docs/basics/authentication) documentation.
+</Callout>
+
+## Create a dungeon
+
+In a game of Grid Trap, your goal is to escape from a dungeon by avoiding trapdoors.
+
+To start a new game, send a following CURL request to create a new dungeon:
+
+```bash
+curl \
+  -X POST \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "size": "4x4",
+    "hardcore": false
+  }' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons
+```
+
+<AutoTypeTable name="AutoTypeTableExample" type='export interface AutoTypeTableExample {
+    /**
+    * A size of grid in which you will play.
+    * 
+    * - Easy is `4x4`
+    * - Medium is `7x7`
+    * - Hard is `10x10`
+    **/
+    size?: "10x10" | "7x7" | "4x4";
+
+    /**
+    * In hardcore mode, you are not allowed to fall into same trap twice.
+    * 
+    * - Enabled is `true`
+    * - Disabled is `false`
+    **/
+    hardcore?: boolean;
+    
+    /**
+    * Generate dungeon with specific seed, to have consistent layout.
+    * 
+    * Be aware, customizing seed may disable some achievements.
+    * 
+    * - Minimum: 1
+    * - Maximum: 9223372036
+    **/
+    seed?: integer;
+}' />
+
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Internal server error (500)
+        
+    Internal error, likely due to dungeon generation. Hopefully never happens, and if it does, re-sending same request likely helps.
+  
+    ### Bad request (400)
+      
+    Error usually thrown when body is missing or invalid. Common reasons are invalid JSON, or extra comma somewhere.
+    
+    ### Unauthorized (401)
+    
+    Error caused by missing or invalid token in authorization header.
+    
+    ### Created (201)
+    
+    Dungeon has been created and you can play it.
+    
+    ```json
+    {
+      "id": "691350260...",
+      "size": "4x4",
+      "hardcore": false,
+      "seed": 3197370415
+    }
+    ```
+  </Accordion>
+</Accordions>
+
+## Get a dungeon
+
+<Callout>
+    This is optional section and not required for first playthrough.
+</Callout>
+
+## List all dungeons
+
+<Callout>
+    This is optional section and not required for first playthrough.
+</Callout>

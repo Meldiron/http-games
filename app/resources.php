@@ -83,6 +83,7 @@ App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
         $sdkForTables->get($databaseId);
     } catch (AppwriteException $err) {
         if ($err->getType() === 'database_not_found') {
+            // TODO: This should be elsewhere, to keep resource simple
             // Setup database schema
             $sdkForTables->create(databaseId: $databaseId, name: $databaseId);
 
@@ -103,6 +104,8 @@ App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
             $sdkForTables->createTable($databaseId, 'gridTrapDungeons', 'Grid Trap - Dungeons');
             $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'userId', 255, required: true);
             $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'size', 15, required: true);
+            $sdkForTables->createIntegerColumn($databaseId, 'gridTrapDungeons', 'seed', required: true);
+            $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'seedCustomized', required: true);
             $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'hardcore', required: true);
             $sdkForTables->createPointColumn($databaseId, 'gridTrapDungeons', 'playerPosition', required: true);
             $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'playerTrapped', required: true);

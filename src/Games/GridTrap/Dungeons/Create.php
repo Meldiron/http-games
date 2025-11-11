@@ -2,10 +2,14 @@
 
 namespace HTTPGames\Games\GridTrap\Dungeons;
 
+use Appwrite\ID;
+use Appwrite\Services\TablesDB;
+use HTTPGames\Utility\Randomness;
 use Utopia\Database\Document;
 use Utopia\Platform\Action;
 use Utopia\Response;
 use Utopia\Validator\Boolean;
+use Utopia\Validator\Range;
 use Utopia\Validator\WhiteList;
 
 class Create extends Action
@@ -16,14 +20,17 @@ class Create extends Action
             ->setHttpMethod('POST')
             ->setHttpPath('/v1/games/grid-trap/dungeons')
             ->groups(['withSession'])
+            ->param('size', '4x4', new WhiteList(['4x4', '7x7', '10x10']), optional: true)
+            ->param('hardcore', false, new Boolean, optional: true)
+            ->param('seed', 0, new Range(1, 9223372036), optional: true)
+            ->inject('user')
+            ->inject('databaseId')
+            ->inject('sdkForTables')
             ->inject('response')
-            ->param('size', '', new WhiteList(['4x4', '7x7', '15x15']))
-            ->param('hardcore', '', new Boolean)
-            ->param('visual', '', new Boolean)
             ->callback($this->action(...));
     }
 
-    public function action(string $size, bool $hardcore, bool $visual, Response $response): void
+    public function action(string $size, bool $hardcore, int $seed, Document $user, string $databaseId, TablesDB $sdkForTables, Response $response): void
     {
         /*
         * 3x3 example of a map
@@ -41,12 +48,20 @@ class Create extends Action
         * ...
         */
 
+        $seedCustomized = true;
+        if ($seed === 0) {
+            $seedCustomized = false;
+            $seed = \rand(0, 9223372036);
+        }
+
         $width = (int) \explode('x', $size)[0];
         $height = (int) \explode('x', $size)[1];
 
+        $randomness = new Randomness($seed);
+
         $tiles = [];
 
-        $startX = \rand(1, $width);
+        $startX = $randomness->generateInRange(1, $width);
         $startY = 1;
         $tiles[] = new Document([
             'x' => $startX,
@@ -54,7 +69,7 @@ class Create extends Action
             'type' => 'enterance',
         ]);
 
-        $endX = \rand(1, $width);
+        $endX = $randomness->generateInRange(1, $width);
         $endY = $height + 2;
         $tiles[] = new Document([
             'x' => $endX,
@@ -74,21 +89,22 @@ class Create extends Action
             }
         }
 
+        // Generate path and mark some trap tiles as ground
         $generator = new Generator(
             minX: 1,
             maxX: $width,
             minY: 2,
             maxY: $height + 1
         );
-        $path = $generator->findShortestPath(
+        $path = $generator->generatePath(
             startX: $startX,
-            startY: $startY+1,
+            startY: $startY + 1,
             endX: $endX,
-            endY: $endY-1
+            endY: $endY - 1
         );
-        
-        foreach($path as $point) {
-            foreach($tiles as $tile) {
+
+        foreach ($path as $point) {
+            foreach ($tiles as $tile) {
                 if ($tile->getAttribute('x') === $point[0] && $tile->getAttribute('y') === $point[1]) {
                     $tile->setAttribute('type', 'ground');
                 }
@@ -128,6 +144,43 @@ class Create extends Action
             }
         }
 
+        $dungeon = $sdkForTables->createRow($databaseId, 'gridTrapDungeons', ID::unique(), [
+            'userId' => $user->getId(),
+            'size' => $size,
+            'hardcore' => $hardcore,
+            'playerTrapped' => false,
+            'playerPosition' => [$startX, $startY],
+            'seed' => $seed,
+            'seedCustomized' => $seedCustomized,
+            'tiles' => \array_map(function ($tile) {
+                return [
+                    'position' => [$tile->getAttribute('x'), $tile->getAttribute('y')],
+                    'type' => $tile->getAttribute('type'),
+                ];
+            }, $tiles),
+        ]);
+
+        $output = [
+            'id' => $dungeon['$id'],
+            'size' => $dungeon['size'],
+            'hardcore' => $dungeon['hardcore'],
+            'seed' => $dungeon['seed'],
+        ];
+
+        // \var_dump($this->visualizeDungeon($tiles));
+
+        $response->setStatusCode(Response::STATUS_CODE_CREATED);
+        $response->json($output);
+    }
+
+    /**
+     * Visualize the dungeon using emojis.
+     * TODO: Remove this once not needed anymore
+     *
+     * @param array<{x, y, type}> $tiles The tiles of the dungeon.
+     */
+    protected function visualizeDungeon(array $tiles)
+    {
         $emojis = [
             'wall' => '🟫',
             'enterance' => '🍙',
@@ -175,6 +228,6 @@ class Create extends Action
             $verbose .= "\n";
         }
 
-        $response->send($verbose);
+        return "\n".$verbose."\n";
     }
 }
