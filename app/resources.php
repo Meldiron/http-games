@@ -81,9 +81,11 @@ App::setResource(
         $sdkForTables = new TablesDB($sdk);
 
         try {
+            // TODO: Optimize for performance on production, those calls should not be needed
             $sdkForTables->get($databaseId);
+            $sdkForTables->getTable($databaseId, 'ready001'); // Last rediness check
         } catch (AppwriteException $err) {
-            if ($err->getType() === 'database_not_found') {
+            if ($err->getType() === 'database_not_found' || $err->getType() === 'table_not_found' || $err->getCode() === 500) {
                 // TODO: This should be elsewhere, to keep resource simple
                 // Setup database schema
                 $exists = false;
@@ -220,12 +222,37 @@ App::setResource(
                         twoWayKey: 'dungeonId',
                         onDelete: RelationMutate::CASCADE(),
                     );
+
+                    // Always keep last
+                    $sdkForTables->createTable($databaseId, 'ready000', 'Tables are ready');
                 }
 
-                $tables = ['users', 'tokens'];
+                $attempt = 0;
+                while (true) {
+                    $attempt++;
+                    if ($attempt > 15) {
+                        throw new Exception('Failed to unlock tables.');
+                    }
+
+                    try {
+                        $sdkForTables->getTable($databaseId, 'ready000');
+                        break;
+                    } catch (AppwriteException $err) {
+                        if ($err->getType() === 'table_not_found' || $err->getCode() === 500) {
+                            \sleep(1);
+
+                            continue;
+                        }
+
+                        throw $err;
+                    }
+                }
+
+                // TODO: This list should be automatic
+                $tables = ['users', 'tokens', 'gridTrapDungeons', 'gridTrapTiles'];
                 $attempts = 0;
                 while (true) {
-                    $processing = 0;
+                    $processing = false;
                     foreach ($tables as $table) {
                         try {
                             $rows = $sdkForTables->listColumns(
@@ -236,17 +263,21 @@ App::setResource(
                                     Query::limit(1),
                                 ],
                             );
-                            $processing += $rows['total'];
+
+                            if ($rows['total'] > 0) {
+                                $processing = true;
+                            }
                         } catch (AppwriteException $err) {
-                            if ($err->getType() === 'table_not_found') {
-                                $processing += 1;
+                            if ($err->getType() === 'table_not_found' || $err->getCode() === 500) {
+                                $processing = true;
+                                break;
                             }
 
                             throw $err;
                         }
                     }
 
-                    if ($processing === 0) {
+                    if (! $processing) {
                         break;
                     }
 
@@ -257,6 +288,17 @@ App::setResource(
 
                     \sleep(1);
                 }
+
+                try {
+                    $sdkForTables->createTable($databaseId, 'ready001', 'Columns are ready');
+                } catch (AppwriteException $err) {
+                    if ($err->getType() === 'table_already_exists') {
+                        // OK
+                    } else {
+                        throw $err;
+                    }
+                }
+
             } else {
                 throw $err;
             }
