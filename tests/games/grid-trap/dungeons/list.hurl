@@ -143,4 +143,4 @@ HTTP 200
 jsonpath "$.total" == 3
 jsonpath "$.dungeons" count == 1
 
-# TODO: Implement & test queries (hardcore, size - comma-separated)
+# TODO: Test queries (hardcore, size - comma-separated)

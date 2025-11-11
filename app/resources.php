@@ -85,40 +85,51 @@ App::setResource('sdkForTables', function (Client $sdk, string $databaseId) {
         if ($err->getType() === 'database_not_found') {
             // TODO: This should be elsewhere, to keep resource simple
             // Setup database schema
-            $sdkForTables->create(databaseId: $databaseId, name: $databaseId);
+            $exists = false;
+            try {
+                $sdkForTables->create(databaseId: $databaseId, name: $databaseId);
+            } catch (AppwriteException $err) {
+                if ($err->getType() === 'database_already_exists') {
+                    $exists = true;
+                } else {
+                    throw $err;
+                }
+            }
 
-            $sdkForTables->createTable($databaseId, 'users', 'Users');
-            $sdkForTables->createStringColumn($databaseId, 'users', 'email', 255, required: true);
-            $sdkForTables->createStringColumn($databaseId, 'users', 'passwordHash', 255, required: true, encrypt: true);
-            $sdkForTables->createStringColumn($databaseId, 'users', 'nickname', 255, required: true);
+            if (! $exists) {
+                $sdkForTables->createTable($databaseId, 'users', 'Users');
+                $sdkForTables->createStringColumn($databaseId, 'users', 'email', 255, required: true);
+                $sdkForTables->createStringColumn($databaseId, 'users', 'passwordHash', 255, required: true, encrypt: true);
+                $sdkForTables->createStringColumn($databaseId, 'users', 'nickname', 255, required: true);
 
-            $sdkForTables->createTable($databaseId, 'tokens', 'Tokens');
-            $sdkForTables->createStringColumn($databaseId, 'tokens', 'userId', 255, required: true);
-            $sdkForTables->createStringColumn($databaseId, 'tokens', 'secret', 255, required: true);
+                $sdkForTables->createTable($databaseId, 'tokens', 'Tokens');
+                $sdkForTables->createStringColumn($databaseId, 'tokens', 'userId', 255, required: true);
+                $sdkForTables->createStringColumn($databaseId, 'tokens', 'secret', 255, required: true);
 
-            $sdkForTables->createTable($databaseId, 'gridTrapTiles', 'Grid Trap - Tiles');
-            $sdkForTables->createPointColumn($databaseId, 'gridTrapTiles', 'position', required: true);
-            $sdkForTables->createStringColumn($databaseId, 'gridTrapTiles', 'type', 255, required: true);
-            // dungeonId also available using relationship originated from gridTrapDungeons
+                $sdkForTables->createTable($databaseId, 'gridTrapTiles', 'Grid Trap - Tiles');
+                $sdkForTables->createPointColumn($databaseId, 'gridTrapTiles', 'position', required: true);
+                $sdkForTables->createStringColumn($databaseId, 'gridTrapTiles', 'type', 255, required: true);
+                // dungeonId also available using relationship originated from gridTrapDungeons
 
-            $sdkForTables->createTable($databaseId, 'gridTrapDungeons', 'Grid Trap - Dungeons');
-            $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'userId', 255, required: true);
-            $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'size', 15, required: true);
-            $sdkForTables->createIntegerColumn($databaseId, 'gridTrapDungeons', 'seed', required: true);
-            $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'seedCustomized', required: true);
-            $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'hardcore', required: true);
-            $sdkForTables->createPointColumn($databaseId, 'gridTrapDungeons', 'playerPosition', required: true);
-            $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'playerTrapped', required: true);
-            $sdkForTables->createRelationshipColumn(
-                $databaseId,
-                tableId: 'gridTrapDungeons',
-                relatedTableId: 'gridTrapTiles',
-                type: RelationshipType::ONETOMANY(),
-                twoWay: true,
-                key: 'tiles',
-                twoWayKey: 'dungeonId',
-                onDelete: RelationMutate::CASCADE(),
-            );
+                $sdkForTables->createTable($databaseId, 'gridTrapDungeons', 'Grid Trap - Dungeons');
+                $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'userId', 255, required: true);
+                $sdkForTables->createStringColumn($databaseId, 'gridTrapDungeons', 'size', 15, required: true);
+                $sdkForTables->createIntegerColumn($databaseId, 'gridTrapDungeons', 'seed', required: true);
+                $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'seedCustomized', required: true);
+                $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'hardcore', required: true);
+                $sdkForTables->createPointColumn($databaseId, 'gridTrapDungeons', 'playerPosition', required: true);
+                $sdkForTables->createBooleanColumn($databaseId, 'gridTrapDungeons', 'playerTrapped', required: true);
+                $sdkForTables->createRelationshipColumn(
+                    $databaseId,
+                    tableId: 'gridTrapDungeons',
+                    relatedTableId: 'gridTrapTiles',
+                    type: RelationshipType::ONETOMANY(),
+                    twoWay: true,
+                    key: 'tiles',
+                    twoWayKey: 'dungeonId',
+                    onDelete: RelationMutate::CASCADE(),
+                );
+            }
 
             $tables = ['users', 'tokens'];
             $attempts = 0;
