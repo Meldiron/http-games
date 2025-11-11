@@ -26,7 +26,13 @@ class HTTPException extends \Exception
 
     public const TYPE_USER_NOT_FOUND = 'user_not_found';
 
+    public const TYPE_DUNGEON_NOT_FOUND = 'dungeon_not_found';
+
     const EXCEPTIONS = [
+        self::TYPE_DUNGEON_NOT_FOUND => [
+            'message' => 'Dungeon not found.',
+            'code' => 404,
+        ],
         self::TYPE_USER_NOT_FOUND => [
             'message' => 'User not found.',
             'code' => 404,
@@ -69,10 +75,10 @@ class HTTPException extends \Exception
         ],
     ];
 
-    public function __construct(protected string $type)
+    public function __construct(protected string $type, ?string $message = null)
     {
         $exception = self::EXCEPTIONS[$type] ?? [];
-        $message = $exception['message'] ?? 'Unknown error.';
+        $message = $message ?? $exception['message'] ?? 'Unknown error.';
         $code = $exception['code'] ?? 500;
 
         parent::__construct($message, $code);

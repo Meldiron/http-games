@@ -14,7 +14,7 @@ use Utopia\Request;
 App::setResource('user', function (Request $request, string $databaseId, TablesDB $sdkForTables) {
     // Bearer sk_...
     $authorization = $request->getHeader('authorization', '');
-    $key = \explode(' ', $authorization);
+    $key = \explode(' ', $authorization, 2);
     $token = $key[1] ?? '';
 
     if (empty($token) || ! (\str_starts_with($token, 'sk_'))) {

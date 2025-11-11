@@ -54,8 +54,8 @@ class Create extends Action
             $seed = \rand(0, 9223372036);
         }
 
-        $width = (int) \explode('x', $size)[0];
-        $height = (int) \explode('x', $size)[1];
+        $width = (int) \explode('x', $size, 2)[0];
+        $height = (int) \explode('x', $size, 2)[1];
 
         $randomness = new Randomness($seed);
 
