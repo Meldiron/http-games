@@ -28,6 +28,8 @@ class HTTPException extends \Exception
 
     public const TYPE_DUNGEON_NOT_FOUND = 'dungeon_not_found';
 
+    public const TYPE_CURSOR_NOT_FOUND = 'cursor_not_found';
+
     const EXCEPTIONS = [
         self::TYPE_DUNGEON_NOT_FOUND => [
             'message' => 'Dungeon not found.',
@@ -72,6 +74,10 @@ class HTTPException extends \Exception
         self::TYPE_BAD_REQUEST => [
             'message' => 'Your request body is not valid.',
             'code' => 400,
+        ],
+        self::TYPE_CURSOR_NOT_FOUND => [
+            'message' => 'Cursor not found.',
+            'code' => 404,
         ],
     ];
 

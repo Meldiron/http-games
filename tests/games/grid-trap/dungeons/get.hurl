@@ -44,6 +44,8 @@ HTTP 200
 [Asserts]
 jsonpath "$.id" == "{{game_id}}"
 jsonpath "$.seed" == {{game_seed}}
+jsonpath "$.size" == "4x4"
+jsonpath "$.hardcore" == false
 
 # Get game 2
 GET http://localhost:8000/v1/games/grid-trap/dungeons/{{game2_id}}
