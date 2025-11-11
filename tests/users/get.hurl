@@ -38,7 +38,7 @@ jsonpath "$.type" == "unauthorized"
 # Using nickname instead of id
 GET http://localhost:8000/v1/users/{{user_nickname}}
 Authorization: Bearer {{user_token}}
-HTTP 401
+HTTP 403
 [Asserts]
 jsonpath "$.type" == "forbidden"
 
@@ -78,7 +78,7 @@ user2_token: jsonpath "$.secret"
 # User 1 fails to get user 2 account
 GET http://localhost:8000/v1/users/{{user2_id}}
 Authorization: Bearer {{user_token}}
-HTTP 401
+HTTP 403
 [Asserts]
 jsonpath "$.type" == "forbidden"
 
@@ -92,7 +92,7 @@ jsonpath "$.id" == "{{user_id}}"
 # User 2 fails to get user 1 account
 GET http://localhost:8000/v1/users/{{user_id}}
 Authorization: Bearer {{user2_token}}
-HTTP 401
+HTTP 403
 [Asserts]
 jsonpath "$.type" == "forbidden"
 

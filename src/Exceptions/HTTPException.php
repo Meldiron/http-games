@@ -43,7 +43,7 @@ class HTTPException extends \Exception
         ],
         self::TYPE_FORBIDDEN => [
             'message' => 'Your token is not allowed to access this resource.',
-            'code' => 401,
+            'code' => 403,
         ],
         self::TYPE_PASSWORDS_DO_NOT_MATCH => [
             'message' => 'Passwords do not match.',

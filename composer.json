@@ -12,7 +12,7 @@
       "lint": "./vendor/bin/pint --test",
       "format": "./vendor/bin/pint",
       "check": "./vendor/bin/phpstan analyse",
-      "test": "hurl --test --glob 'tests/**/*.hurl' --error-format long --progress-bar"
+      "test": "hurl --test --error-format long --glob 'tests/**/*.hurl'"
     },
     "authors": [
         {
