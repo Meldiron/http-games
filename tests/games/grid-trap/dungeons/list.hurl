@@ -150,4 +150,95 @@ HTTP 200
 jsonpath "$.total" == 3
 jsonpath "$.dungeons" count == 1
 
-# TODO: Test queries (hardcore, size - comma-separated)
+# List only 3x3 games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+size: 4x4
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 1
+jsonpath "$.dungeons" count == 1
+
+# List only 4*4 and 10*10 games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+size: 4x4,10x10
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 1
+jsonpath "$.dungeons" count == 1
+
+# List only 4*4 and 10*10 and 7x7 games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+size: 4x4,10x10,7x7
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 3
+jsonpath "$.dungeons" count == 3
+
+# List only hardcore games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+hardcore: true
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 1
+jsonpath "$.dungeons" count == 1
+
+# List only hardcore 7x7 games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+hardcore: true
+size: 7x7
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 1
+jsonpath "$.dungeons" count == 1
+
+# List only hardcore 3x3 games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+hardcore: true
+size: 4x4
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 0
+jsonpath "$.dungeons" count == 0
+
+# List only hardcore 3x3 and 7x7 games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+hardcore: true
+size: 4x4,7x7
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 1
+jsonpath "$.dungeons" count == 1
+
+# List only non-hardcore games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+hardcore: false
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 2
+jsonpath "$.dungeons" count == 2
+
+# List only hardcore and non-hardcore games
+GET http://localhost:8000/v1/games/grid-trap/dungeons
+Authorization: Bearer {{token}}
+[Query]
+hardcore: false,true
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 3
+jsonpath "$.dungeons" count == 3

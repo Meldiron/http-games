@@ -42,9 +42,9 @@ class XList extends Action
         if (! empty($size)) {
             foreach (\explode(',', $size) as $size) {
                 if (! ((new WhiteList(['4x4', '7x7', '10x10']))->isValid($size))) {
-                    throw new HTTPException(HTTPException::TYPE_BAD_REQUEST, 'Invalid size: Must be one of "small", "medium", or "large". For more values, use comma-separated list');
+                    throw new HTTPException(HTTPException::TYPE_BAD_REQUEST, 'Invalid size: Must be one of "4x4", "7x7", or "10x10". For more values, use comma-separated list');
                 }
-                $sizes[] = $size;
+                $sizeFilters[] = $size;
             }
         }
 
@@ -57,7 +57,7 @@ class XList extends Action
                 if (! ((new WhiteList(['true', 'false']))->isValid($hardcore))) {
                     throw new HTTPException(HTTPException::TYPE_BAD_REQUEST, 'Invalid hardcore: Must be one of "true" or "false". For more values, use comma-separated list');
                 }
-                $hardcoreFilters[] = $hardcore;
+                $hardcoreFilters[] = $hardcore === 'true';
             }
         }
 
