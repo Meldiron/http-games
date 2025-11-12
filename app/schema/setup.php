@@ -21,6 +21,7 @@ function setupSchema(TablesDB $sdkForTables, string $databaseId): void
         // Upsert database
         $exists = false;
         try {
+            // TODO: Serverless function for cleanup every 7 days
             $sdkForTables->create(
                 databaseId: $databaseId,
                 name: $databaseId,
