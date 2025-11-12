@@ -7,7 +7,11 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <>
-          <Image src="/logo-on-dark.svg" alt="Logo" className="h-5 hidden dark:block" />
+          <Image
+            src="/logo-on-dark.svg"
+            alt="Logo"
+            className="h-5 hidden dark:block"
+          />
           <Image
             src="/logo-on-light.svg"
             alt="Logo"
