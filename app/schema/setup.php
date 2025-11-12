@@ -2,12 +2,8 @@
 
 use Appwrite\AppwriteException;
 use Appwrite\Services\TablesDB;
-use Utopia\Database\Document;
+use HTTPGames\Migration\Migration;
 use Utopia\Database\Query;
-
-require_once __DIR__.'/tables/grid-trap.php';
-require_once __DIR__.'/tables/tokens.php';
-require_once __DIR__.'/tables/users.php';
 
 function setupSchema(TablesDB $sdkForTables, string $databaseId): void
 {
@@ -34,22 +30,12 @@ function setupSchema(TablesDB $sdkForTables, string $databaseId): void
             }
         }
 
-        /**
-         * @var array<Document> $tables
-         */
-        $tables = [];
-
         // Setup all tables
         if (! $exists) {
-            $tables = \array_merge(
-                $tables,
-                setupUsers($sdkForTables, $databaseId),
-                setupTokens($sdkForTables, $databaseId),
-                setupGridTrap($sdkForTables, $databaseId)
-            );
+            $migration = new Migration($sdkForTables, $databaseId);
+            $migration->apply();
 
-            // Always keep last
-            $sdkForTables->createTable($databaseId, 'ready000', 'Tables are ready');
+            $sdkForTables->createTable($databaseId, 'ready000', '_ready000');
         }
 
         // Wait until last table is ready
@@ -75,31 +61,41 @@ function setupSchema(TablesDB $sdkForTables, string $databaseId): void
         }
 
         // Ensure all tables, attributes, and indexes are ready
+        $tables = $sdkForTables->listTables($databaseId, [
+            Query::limit(500),
+        ]);
+        $tableIds = \array_column($tables['tables'], '$id');
         $attempts = 0;
         while (true) {
             $processing = false;
-            foreach ($tables as $table) {
-                try {
-                    $rows = $sdkForTables->listColumns(
-                        $databaseId,
-                        $table->getId(),
-                        [
-                            Query::notEqual('status', 'available'),
-                            Query::limit(1),
-                        ],
-                    );
+            foreach ($tableIds as $tableId) {
+                // TODO: Switch to status query once Appwrite supports it
+                $columns = $sdkForTables->listColumns(
+                    $databaseId,
+                    $tableId,
+                    [
+                        // Query::notEqual('status', 'available'),
+                        // Query::limit(1),
+                        Query::limit(100),
+                    ],
+                );
 
-                    if ($rows['total'] > 0) {
-                        $processing = true;
-                    }
-                } catch (AppwriteException $err) {
-                    if ($err->getType() === 'table_not_found' || $err->getCode() === 500) {
+                foreach ($columns['columns'] as $column) {
+                    if ($column['status'] !== 'available') {
                         $processing = true;
                         break;
                     }
-
-                    throw $err;
                 }
+
+                if ($processing) {
+                    break;
+                }
+
+                /*
+                if ($rows['total'] > 0) {
+                    $processing = true;
+                }
+                */
             }
 
             if (! $processing) {
@@ -116,7 +112,7 @@ function setupSchema(TablesDB $sdkForTables, string $databaseId): void
 
         // Optimize future DB readyness check
         try {
-            $sdkForTables->createTable($databaseId, 'ready001', 'Columns are ready');
+            $sdkForTables->createTable($databaseId, 'ready001', '_ready001');
         } catch (AppwriteException $err) {
             if ($err->getType() === 'table_already_exists') {
                 // OK
