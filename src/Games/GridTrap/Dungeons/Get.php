@@ -46,6 +46,7 @@ class Get extends Action
             'size' => $dungeon['size'],
             'hardcore' => $dungeon['hardcore'],
             'seed' => $dungeon['seed'],
+            'status' => $dungeon['status'],
         ]);
     }
 }

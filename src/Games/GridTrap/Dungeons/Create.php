@@ -152,6 +152,7 @@ class Create extends Action
             'cartographerPosition' => [$startX, $startY],
             'seed' => $seed,
             'seedCustomized' => $seedCustomized,
+            'status' => 'started',
             'tiles' => \array_map(function (Document $tile) {
                 return [
                     'position' => [$tile->getAttribute('x'), $tile->getAttribute('y')],
@@ -165,6 +166,7 @@ class Create extends Action
             'size' => $dungeon['size'],
             'hardcore' => $dungeon['hardcore'],
             'seed' => $dungeon['seed'],
+            'status' => $dungeon['status'],
         ];
 
         // \var_dump($this->visualizeDungeon($tiles));

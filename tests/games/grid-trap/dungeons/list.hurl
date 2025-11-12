@@ -94,6 +94,7 @@ jsonpath "$.dungeons[0].seed" > 0
 jsonpath "$.dungeons[0].size" not isEmpty
 jsonpath "$.dungeons[0].size" isString
 jsonpath "$.dungeons[0].hardcore" isBoolean
+jsonpath "$.dungeons[0].status" == "started"
 
 # List of 3 games with limit 2
 GET http://localhost:8000/v1/games/grid-trap/dungeons

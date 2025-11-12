@@ -31,6 +31,7 @@ jsonpath "$.id" isString
 jsonpath "$.size" == "4x4"
 jsonpath "$.hardcore" == false
 jsonpath "$.seed" isInteger
+jsonpath "$.status" == "started"
 
 # Custom size
 POST http://localhost:8000/v1/games/grid-trap/dungeons

@@ -117,6 +117,7 @@ class XList extends Action
                     'size' => $dungeon['size'],
                     'hardcore' => $dungeon['hardcore'],
                     'seed' => $dungeon['seed'],
+                    'status' => $dungeon['status'],
                 ];
             }, $dungeons['rows']),
         ]);

@@ -6,11 +6,11 @@
 
 *An HTTP-based game platform. By developers, for developers.*
 
-[![PHP Version](https://img.shields.io/badge/PHP-8.4%2B-777bb4?style=flat-square&logo=php)](https://php.net)
+[![PHP Version](https://img.shields.io/badge/PHP-8.4-777bb4?style=flat-square&logo=php)](https://php.net)
 [![License](https://img.shields.io/github/license/meldiron/http-games?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-Hurl-success?style=flat-square)](tests/)
-[![Code Style](https://img.shields.io/badge/Code%20Style-Pint-success?style=flat-square)](https://github.com/laravel/pint)
-[![Code Quality](https://img.shields.io/badge/Code%20Quality-PHPStan-success?style=flat-square)](https://phpstan.org/)
+[![Tests](https://github.com/Meldiron/http-games/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Meldiron/http-games/actions/workflows/tests.yml)
+[![Code Style](https://img.shields.io/badge/Code%20Style-Pint-e79248?style=flat-square)](https://github.com/laravel/pint)
+[![Code Quality](https://img.shields.io/badge/Code%20Quality-PHPStan-576bae?style=flat-square)](https://phpstan.org/)
 
 [📚 Documentation](https://http-games.almostapps.eu/) • [🎯 Games](#-available-games) • [🤝 Contributing](#-contributing)
 
