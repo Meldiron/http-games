@@ -26,8 +26,13 @@ class Get extends Action
             ->callback($this->action(...));
     }
 
-    public function action(string $dungeonId, Document $user, string $databaseId, TablesDB $sdkForTables, Response $response): void
-    {
+    public function action(
+        string $dungeonId,
+        Document $user,
+        string $databaseId,
+        TablesDB $sdkForTables,
+        Response $response
+    ): void {
         try {
             $dungeon = $sdkForTables->getRow($databaseId, 'gridTrapDungeons', $dungeonId);
         } catch (AppwriteException $err) {

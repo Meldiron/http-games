@@ -32,6 +32,18 @@ class HTTPException extends \Exception
 
     public const TYPE_TILE_NOT_FOUND = 'tile_not_found';
 
+    public const TYPE_CRAWL_NOT_REQUIRED = 'crawl_not_required';
+
+    public const TYPE_CLIMB_NOT_ALLOWED = 'climb_not_allowed';
+
+    public const TYPE_ACTION_NOT_ALLOWED = 'action_not_allowed';
+
+    public const TYPE_HARDCORE_ACTION_NOT_ALLOWED = 'hardcore_action_not_allowed';
+
+    public const TYPE_MOVE_NOT_ALLOWED = 'move_not_allowed';
+
+    public const TYPE_MOVE_TO_WALL_NOT_ALLOWED = 'move_to_wall_not_allowed';
+
     const EXCEPTIONS = [
         self::TYPE_TILE_NOT_FOUND => [
             'message' => 'Tile not found.',
@@ -84,6 +96,30 @@ class HTTPException extends \Exception
         self::TYPE_CURSOR_NOT_FOUND => [
             'message' => 'Cursor not found.',
             'code' => 404,
+        ],
+        self::TYPE_CRAWL_NOT_REQUIRED => [
+            'message' => 'You have not fallen into a trap and do not need to crawl to get to the enterance.',
+            'code' => 406,
+        ],
+        self::TYPE_CLIMB_NOT_ALLOWED => [
+            'message' => 'You are only allowed to climb when on a rope tile. Move to it first.',
+            'code' => 406,
+        ],
+        self::TYPE_ACTION_NOT_ALLOWED => [
+            'message' => 'You already finished this dungeon.',
+            'code' => 406,
+        ],
+        self::TYPE_HARDCORE_ACTION_NOT_ALLOWED => [
+            'message' => 'You do not have energy to crawl in hardcore dungeon.',
+            'code' => 406,
+        ],
+        self::TYPE_MOVE_NOT_ALLOWED => [
+            'message' => 'You are trapped and cannot move. Crawl back to the entrance first.',
+            'code' => 406,
+        ],
+        self::TYPE_MOVE_TO_WALL_NOT_ALLOWED => [
+            'message' => 'You attempted to move in a direction, but bumped your head into a wall.',
+            'code' => 406,
         ],
     ];
 

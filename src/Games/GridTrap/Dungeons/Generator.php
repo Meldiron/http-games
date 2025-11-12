@@ -2,7 +2,6 @@
 
 namespace HTTPGames\Games\GridTrap\Dungeons;
 
-// TODO: Because of this, all HTTP endpoints and hooks might want to ho under HTTP folder
 // TODO: This should be unit-tested
 
 class Generator

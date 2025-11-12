@@ -27,8 +27,13 @@ class Get extends Action
             ->callback($this->action(...));
     }
 
-    public function action(string $dungeonId, string $tilePoint, Response $response, string $databaseId, TablesDB $sdkForTables): void
-    {
+    public function action(
+        string $dungeonId,
+        string $tilePoint,
+        Response $response,
+        string $databaseId,
+        TablesDB $sdkForTables
+    ): void {
         $parts = explode('_', $tilePoint);
         $x = \intval($parts[0]);
         $y = \intval($parts[1]);
@@ -50,7 +55,6 @@ class Get extends Action
             $type = 'ground';
         }
 
-        // TODO: Test. entire row, no traps. has x,y,type. ensure enterance, ensure exit. Ensure user 2 cannot see, ensure 404 for big numbers
         $response->json([
             'x' => $tile['position'][0],
             'y' => $tile['position'][1],

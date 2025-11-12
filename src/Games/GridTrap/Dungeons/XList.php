@@ -33,8 +33,16 @@ class XList extends Action
             ->callback($this->action(...));
     }
 
-    public function action(int $limit, string $cursor, string $size, string $hardcore, Document $user, string $databaseId, TablesDB $sdkForTables, Response $response): void
-    {
+    public function action(
+        int $limit,
+        string $cursor,
+        string $size,
+        string $hardcore,
+        Document $user,
+        string $databaseId,
+        TablesDB $sdkForTables,
+        Response $response
+    ): void {
         /**
          * @var array<string> $sizeFilters
          */

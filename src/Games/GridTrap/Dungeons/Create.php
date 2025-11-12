@@ -30,8 +30,15 @@ class Create extends Action
             ->callback($this->action(...));
     }
 
-    public function action(string $size, bool $hardcore, int $seed, Document $user, string $databaseId, TablesDB $sdkForTables, Response $response): void
-    {
+    public function action(
+        string $size,
+        bool $hardcore,
+        int $seed,
+        Document $user,
+        string $databaseId,
+        TablesDB $sdkForTables,
+        Response $response
+    ): void {
         /*
         * 3x3 example of a map
         * e=enterance

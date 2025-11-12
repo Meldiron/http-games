@@ -22,8 +22,11 @@ class Get extends Action
             ->callback($this->action(...));
     }
 
-    public function action(string $dungeonId, Document $gridTrapDungeon, Response $response): void
-    {
+    public function action(
+        string $dungeonId,
+        Document $gridTrapDungeon,
+        Response $response
+    ): void {
         $response->json([
             'x' => $gridTrapDungeon['cartographerPosition'][0],
             'y' => $gridTrapDungeon['cartographerPosition'][1],

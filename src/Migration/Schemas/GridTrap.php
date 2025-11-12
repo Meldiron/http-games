@@ -55,7 +55,7 @@ class GridTrap extends Schema
             $this->databaseId,
             'gridTrapDungeons',
             'status',
-            255, // started escaped
+            255, // started escaped trapped
             required: true,
         );
         $this->sdkForTables->createStringColumn(

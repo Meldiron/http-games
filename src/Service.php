@@ -2,6 +2,9 @@
 
 namespace HTTPGames;
 
+use HTTPGames\Games\GridTrap\Dungeons\Actions\Climb\Create as CreateGridTrapClimbAction;
+use HTTPGames\Games\GridTrap\Dungeons\Actions\Crawl\Create as CreateGridTrapCrawlAction;
+use HTTPGames\Games\GridTrap\Dungeons\Actions\Move\Create as CreateGridTrapMoveAction;
 use HTTPGames\Games\GridTrap\Dungeons\Cartographer\Get as GetGridTrapCartographer;
 use HTTPGames\Games\GridTrap\Dungeons\Create as CreateGridTrapDungeon;
 use HTTPGames\Games\GridTrap\Dungeons\Get as GetGridTrapDungeon;
@@ -49,5 +52,8 @@ class Service extends UtopiaService
         $this->addAction('getGridTrapCartographer', new GetGridTrapCartographer);
         $this->addAction('getGridTrapTile', new GetGridTrapTile);
         $this->addAction('listGridTrapTiles', new ListGridTrapTiles);
+        $this->addAction('createGridTrapClimbAction', new CreateGridTrapClimbAction);
+        $this->addAction('createGridTrapCrawlAction', new CreateGridTrapCrawlAction);
+        $this->addAction('createGridTrapMoveAction', new CreateGridTrapMoveAction);
     }
 }

@@ -7,7 +7,6 @@ use Appwrite\Query;
 use Appwrite\Services\TablesDB;
 use HTTPGames\Exceptions\HTTPException;
 use HTTPGames\Validators\UID;
-use Utopia\Database\Document;
 use Utopia\Platform\Action;
 use Utopia\Response;
 use Utopia\Validator\Range;
@@ -28,15 +27,23 @@ class XList extends Action
             ->param('x', '', new Text(1024), optional: true)
             ->param('y', '', new Text(1024), optional: true)
             ->param('type', '', new Text(1024), optional: true)
-            ->inject('user')
             ->inject('databaseId')
             ->inject('sdkForTables')
             ->inject('response')
             ->callback($this->action(...));
     }
 
-    public function action(string $dungeonId, int $limit, string $cursor, string $x, string $y, string $type, Document $user, string $databaseId, TablesDB $sdkForTables, Response $response): void
-    {
+    public function action(
+        string $dungeonId,
+        int $limit,
+        string $cursor,
+        string $x,
+        string $y,
+        string $type,
+        string $databaseId,
+        TablesDB $sdkForTables,
+        Response $response
+    ): void {
         /**
          * @var array<int> $xFilters
          */
@@ -130,7 +137,6 @@ class XList extends Action
         $cursorNext = \end($tiles['rows'])['$id'] ?? null;
         $cursorPrevious = \reset($tiles['rows'])['$id'] ?? null;
 
-        // TODO: Tests
         $response->json([
             'total' => $tiles['total'],
             'cursorNext' => $cursorNext ? 'after:'.$cursorNext : null,
