@@ -37,8 +37,8 @@ class Service extends UtopiaService
         $this->addAction('createToken', new CreateToken);
         $this->addAction('getUser', new GetUser);
 
-        // TODO: List games
-        // TODO: Get game (id, description?, difficulty?, docs link?)
+        // TODO: listGames
+        // TODO: getGame
 
         $this->addAction('createGridTrapDungeon', new CreateGridTrapDungeon);
         $this->addAction('getGridTrapDungeon', new GetGridTrapDungeon);

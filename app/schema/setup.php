@@ -9,12 +9,9 @@ require_once __DIR__.'/tables/grid-trap.php';
 require_once __DIR__.'/tables/tokens.php';
 require_once __DIR__.'/tables/users.php';
 
-
 function setupSchema(TablesDB $sdkForTables, string $databaseId): void
 {
     try {
-        // TODO: Optimize for performance on production, those calls should not be needed
-        $sdkForTables->get($databaseId);
         $sdkForTables->getTable($databaseId, 'ready001');
     } catch (AppwriteException $err) {
         if ($err->getType() !== 'database_not_found' && $err->getType() !== 'table_not_found' && $err->getCode() !== 500) {

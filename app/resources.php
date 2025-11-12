@@ -80,6 +80,10 @@ App::setResource(
     function (Client $sdk, string $databaseId) {
         $sdkForTables = new TablesDB($sdk);
 
+        if ($databaseId === 'production') {
+            return $sdkForTables;
+        }
+
         setupSchema($sdkForTables, $databaseId);
 
         return $sdkForTables;
