@@ -2,7 +2,7 @@
 
 # 🎮 HTTP Games
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/public/logo-dark.svg"><img src="docs/public/logo.svg" alt="HTTP Games Logo" width="400"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/public/logo-on-dark.svg"><img src="docs/public/logo-on-light.svg" alt="HTTP Games Logo" width="400"></picture>
 
 *A modern, HTTP-based multiplayer gaming platform built with PHP*
 
