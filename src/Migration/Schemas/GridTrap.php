@@ -79,13 +79,13 @@ class GridTrap extends Schema
         $this->sdkForTables->createPointColumn(
             $this->databaseId,
             'gridTrapDungeons',
-            'playerPosition',
+            'cartographerPosition',
             required: true,
         );
         $this->sdkForTables->createBooleanColumn(
             $this->databaseId,
             'gridTrapDungeons',
-            'playerTrapped',
+            'cartographerTrapped',
             required: true,
         );
         $this->sdkForTables->createRelationshipColumn(

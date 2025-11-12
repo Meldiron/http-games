@@ -2,8 +2,11 @@
 
 namespace HTTPGames;
 
+use HTTPGames\Games\GridTrap\Dungeons\Cartographer\Get as GetGridTrapCartographer;
 use HTTPGames\Games\GridTrap\Dungeons\Create as CreateGridTrapDungeon;
 use HTTPGames\Games\GridTrap\Dungeons\Get as GetGridTrapDungeon;
+use HTTPGames\Games\GridTrap\Dungeons\Tiles\Get as GetGridTrapTile;
+use HTTPGames\Games\GridTrap\Dungeons\Tiles\XList as ListGridTrapTiles;
 use HTTPGames\Games\GridTrap\Dungeons\XList as ListGridTrapDungeon;
 use HTTPGames\Health\Get as GetHealth;
 use HTTPGames\Hooks\OnError;
@@ -43,5 +46,8 @@ class Service extends UtopiaService
         $this->addAction('createGridTrapDungeon', new CreateGridTrapDungeon);
         $this->addAction('getGridTrapDungeon', new GetGridTrapDungeon);
         $this->addAction('listGridTrapDungeon', new ListGridTrapDungeon);
+        $this->addAction('getGridTrapCartographer', new GetGridTrapCartographer);
+        $this->addAction('getGridTrapTile', new GetGridTrapTile);
+        $this->addAction('listGridTrapTiles', new ListGridTrapTiles);
     }
 }

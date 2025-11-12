@@ -148,8 +148,8 @@ class Create extends Action
             'userId' => $user->getId(),
             'size' => $size,
             'hardcore' => $hardcore,
-            'playerTrapped' => false,
-            'playerPosition' => [$startX, $startY],
+            'cartographerTrapped' => false,
+            'cartographerPosition' => [$startX, $startY],
             'seed' => $seed,
             'seedCustomized' => $seedCustomized,
             'tiles' => \array_map(function (Document $tile) {

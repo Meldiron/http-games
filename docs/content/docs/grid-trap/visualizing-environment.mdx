@@ -1,6 +1,6 @@
 ---
 title: Visualizing the environment
-description: Understand the dungeon tiles and player.
+description: Understand the dungeon tiles and cartographer.
 ---
 
 <Callout>
@@ -9,8 +9,12 @@ description: Understand the dungeon tiles and player.
 
 TODO: Implement and write:
 
-/v1/games/grid-trap/dungeons/:dungeonId/player
+/v1/games/grid-trap/dungeons/:dungeonId/cartographer
 - x,y,isCrawling
 
 /v1/games/grid-trap/dungeons/:dungeonId/tiles
 - list, x, y, type (wall, ground, enterance, rope)
+
+
+/v1/games/grid-trap/dungeons/:dungeonId/tiles/x_y
+- x, y, type (wall, ground, enterance, rope)

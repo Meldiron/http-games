@@ -12,6 +12,52 @@ use Utopia\Request;
 require_once __DIR__.'/schema/setup.php';
 
 App::setResource(
+    'gridTrapDungeon',
+    function (Document $user, string $databaseId, TablesDB $sdkForTables, App $utopia) {
+        try {
+            $route = $utopia->getRoute();
+            if (\is_null($route)) {
+                throw new Exception('Route not found.');
+            }
+
+            $dungeonId = $route->getParamValue('dungeonId');
+        } catch (\Throwable $err) {
+            throw new HTTPException(HTTPException::TYPE_DUNGEON_NOT_FOUND);
+        }
+
+        if (empty($dungeonId)) {
+            throw new HTTPException(HTTPException::TYPE_DUNGEON_NOT_FOUND);
+        }
+
+        if ($user->isEmpty()) {
+            throw new HTTPException(HTTPException::TYPE_UNAUTHORIZED);
+        }
+
+        try {
+            $response = $sdkForTables->getRow(
+                $databaseId,
+                'gridTrapDungeons',
+                $dungeonId,
+            );
+
+            $document = new Document($response);
+
+            if ($document->getAttribute('userId', '') !== $user->getId()) {
+                throw new HTTPException(HTTPException::TYPE_FORBIDDEN);
+            }
+
+            return $document;
+        } catch (AppwriteException $err) {
+            if ($err->getType() === 'row_not_found') {
+                throw new HTTPException(HTTPException::TYPE_DUNGEON_NOT_FOUND);
+            }
+            throw $err;
+        }
+    },
+    ['user', 'databaseId', 'sdkForTables', 'utopia'],
+);
+
+App::setResource(
     'user',
     function (Request $request, string $databaseId, TablesDB $sdkForTables) {
         // Bearer sk_...

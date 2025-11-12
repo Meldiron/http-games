@@ -22,7 +22,7 @@
 
 ### GridTrap
 
-A strategic puzzle game where players navigate through grid-based challenges.
+A strategic puzzle game where cartographer navigate through grid-based challenges.
 
 [Play now](https://http-games.almostapps.eu/docs/grid-trap/)
 

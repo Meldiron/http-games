@@ -30,7 +30,13 @@ class HTTPException extends \Exception
 
     public const TYPE_CURSOR_NOT_FOUND = 'cursor_not_found';
 
+    public const TYPE_TILE_NOT_FOUND = 'tile_not_found';
+
     const EXCEPTIONS = [
+        self::TYPE_TILE_NOT_FOUND => [
+            'message' => 'Tile not found.',
+            'code' => 404,
+        ],
         self::TYPE_DUNGEON_NOT_FOUND => [
             'message' => 'Dungeon not found.',
             'code' => 404,
