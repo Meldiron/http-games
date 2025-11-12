@@ -8,9 +8,11 @@
 
 [![PHP Version](https://img.shields.io/badge/PHP-8.4-777bb4?style=flat-square&logo=php)](https://php.net)
 [![License](https://img.shields.io/github/license/meldiron/http-games?style=flat-square)](LICENSE)
-[![Tests](https://github.com/Meldiron/http-games/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Meldiron/http-games/actions/workflows/tests.yml)
 [![Code Style](https://img.shields.io/badge/Code%20Style-Pint-e79248?style=flat-square)](https://github.com/laravel/pint)
 [![Code Quality](https://img.shields.io/badge/Code%20Quality-PHPStan-576bae?style=flat-square)](https://phpstan.org/)
+
+[![Tests](https://github.com/Meldiron/http-games/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Meldiron/http-games/actions/workflows/tests.yml)
+
 
 [📚 Documentation](https://http-games.almostapps.eu/) • [🎯 Games](#-available-games) • [🤝 Contributing](#-contributing)
 
