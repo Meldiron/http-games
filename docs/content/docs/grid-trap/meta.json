@@ -2,5 +2,6 @@
   "title": "Grid Trap",
   "description": "Find safe path to finish.",
   "root": true,
-  "icon": "Grid3x3Colored"
+  "icon": "Grid3x3Colored",
+  "pages": ["index", "dungeons", "visualization", "movement", "..."]
 }

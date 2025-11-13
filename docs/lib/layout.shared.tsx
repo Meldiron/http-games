@@ -10,11 +10,15 @@ export function baseOptions(): BaseLayoutProps {
           <Image
             src="/logo-on-dark.svg"
             alt="Logo"
+            width={35}
+            height={20}
             className="h-5 hidden dark:block"
           />
           <Image
             src="/logo-on-light.svg"
             alt="Logo"
+            width={35}
+            height={20}
             className="h-5 block dark:hidden"
           />
           HTTP Games

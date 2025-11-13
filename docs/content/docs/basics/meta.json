@@ -3,5 +3,6 @@
   "description": "Sign up and authenticate.",
   "root": true,
   "defaultOpen": true,
-  "icon": "GraduationCapColored"
+  "icon": "GraduationCapColored",
+  "pages": ["authentication", "pagination", "rate-limiting", "..."]
 }
