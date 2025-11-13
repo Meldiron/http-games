@@ -25,6 +25,9 @@ class Service extends UtopiaService
 {
     public function __construct()
     {
+        // TODO: Add createdAt updatedAt to all resources
+        // TODO: createdAt updatedAt tests in all endpoints
+        
         $this->type = Service::TYPE_HTTP;
 
         // Hooks
