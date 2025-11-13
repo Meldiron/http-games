@@ -70,9 +70,8 @@ Notice that:
 
 ## Customizing the Limit
 
-You can control how many items you want per page using the `limit` parameter:
+You can control how many items you want per page using the `limit` parameter. For example, following is how you can fetch only 5 tiles per page:
 
-### Fetch Only 5 Tiles per Page:
 ```bash
 curl \
   -X GET \
@@ -93,7 +92,7 @@ Response:
 }
 ```
 
-## Forward Navigation (Next Page)
+## Forward Navigation
 
 To fetch the next page of results, use the `cursorNext` value from the previous response as the `cursor` parameter:
 
@@ -118,7 +117,7 @@ The response will include the second page of tiles:
 }
 ```
 
-## Backward Navigation (Previous Page)
+## Backward Navigation
 
 To go back to previous pages, use the `cursorPrevious` value from your current response:
 
