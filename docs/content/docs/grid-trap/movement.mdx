@@ -3,17 +3,175 @@ title: Movement
 description: Traverse dungeon by doing actions as cartographer.
 ---
 
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
 <Callout>
     If you haven't obtained a token yet, check out [Authentication](/docs/basics/authentication) documentation.
 </Callout>
 
-TODO: Implement and write:
+## Move through the dungeon
 
-Dont allow actions if NOT started (hook)
+The primary way to navigate through the dungeon is by moving your cartographer in one of four cardinal directions. Each move will take you to an adjacent tile, where you might encounter walls, safe ground, traps, or the escape rope.
 
-/v1/games/grid-trap/dungeons/:dungeonId/actions/move
-- direction (north, south, east, west)
+To move your cartographer, send the following request:
 
-/v1/games/grid-trap/dungeons/:dungeonId/actions/crawl
+```bash
+curl \
+  -X POST \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "direction": "north"
+  }' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/actions/move
+```
 
-/v1/games/grid-trap/dungeons/:dungeonId/actions/climb
+<AutoTypeTable name="AutoType" type='export interface AutoType {
+    /**
+    * The direction to move the cartographer.
+    * 
+    * - `north` moves up (positive Y direction)
+    * - `south` moves down (negative Y direction)
+    * - `east` moves right (positive X direction)
+    * - `west` moves left (negative X direction)
+    **/
+    direction: "north" | "south" | "east" | "west";
+}' />
+
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Bad request (400)
+      
+    Error usually thrown when body is missing, invalid, or contains an invalid direction.
+    
+    ### Unauthorized (401)
+    
+    Error caused by missing or invalid token in authorization header.
+    
+    ### Forbidden (403)
+    
+    The dungeon has been created by another player.
+    
+    ### Not acceptable (406)
+    
+    Movement is not allowed for various reasons:
+    - **Action not allowed**: You have already escaped from this dungeon
+    - **Move not allowed**: You are trapped and must crawl back to entrance first
+    - **Move to wall not allowed**: You attempted to move into a wall tile
+    
+    ### Created (201)
+    
+    Movement was successful. The response indicates your new position and whether you stepped on a trap.
+    
+    ```json
+    {
+      "type": "move",
+      "cartographerPosition": [3, 2]
+    }
+    ```
+    
+    If you step on a trap, the response will also include `"cartographerTrapped": true`. In hardcore mode, stepping on a trap will also returns `"status": "trapped"`, ending the game.
+  </Accordion>
+</Accordions>
+
+## Crawl back to entrance
+
+When your cartographer falls into a trap, they become trapped and cannot move. Your cartographer will need to crawl back to the dungeon entrance to continue your escape attempt.
+
+<Callout type="warn">
+    Crawling is not available in hardcore mode. In hardcore dungeons, falling into a trap ends the game immediately.
+</Callout>
+
+To crawl back to the entrance after falling into a trap, send the following request:
+
+```bash
+curl \
+  -X POST \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/actions/crawl
+```
+
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Internal server error (500)
+        
+    Internal error, likely due to a missing entrance tile. This should never happen.
+  
+    ### Bad request (400)
+      
+    Dungeon ID you provided in path is invalid.
+    
+    ### Unauthorized (401)
+    
+    Error caused by missing or invalid token in authorization header.
+    
+    ### Forbidden (403)
+    
+    The dungeon has been created by another player.
+    
+    ### Not acceptable (406)
+    
+    Crawling is not allowed for various reasons:
+    - **Action not allowed**: You have already escaped from this dungeon
+    - **Hardcore action not allowed**: Crawling is not available in hardcore mode
+    - **Crawl not required**: You are not trapped and don't need to crawl
+    
+    ### Created (201)
+    
+    Crawling was successful. You are now back at the entrance and no longer trapped.
+    
+    ```json
+    {
+      "type": "crawl",
+      "cartographerTrapped": false,
+      "cartographerPosition": [0, 0]
+    }
+    ```
+  </Accordion>
+</Accordions>
+
+## Climb the rope to escape
+
+The ultimate goal in Grid Trap is to reach the rope tile and climb it to escape the dungeon. You can only climb when your cartographer is positioned exactly on the rope tile.
+
+To climb the rope and escape the dungeon, send the following request:
+
+```bash
+curl \
+  -X POST \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/actions/climb
+```
+
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Bad request (400)
+      
+    Dungeon ID you provided in path is invalid.
+    
+    ### Unauthorized (401)
+    
+    Error caused by missing or invalid token in authorization header.
+    
+    ### Forbidden (403)
+    
+    The dungeon has been created by another player.
+    
+    ### Not acceptable (406)
+    
+    Climbing is not allowed for various reasons:
+    - **Action not allowed**: You have already escaped from this dungeon
+    - **Climb not allowed**: You are not standing on the rope tile
+    
+    ### Created (201)
+    
+    Climbing was successful. You have escaped the dungeon!
+    
+    ```json
+    {
+      "type": "climb",
+      "status": "escaped"
+    }
+    ```
+  </Accordion>
+</Accordions>

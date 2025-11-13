@@ -1,14 +1,188 @@
 ---
 title: Pagination
-description: How to navigate through a response with paginated data.
+description: How to navigate through large datasets using cursor-based pagination.
 ---
 
-Some endpoints return list of data, such as list of games, list of dungeons, list of challenges...
+import { Callout } from "fumadocs-ui/components/callout";
 
-All these lists return only 25 items by default, one page.
+Many endpoints in HTTP Games return lists of data that could potentially be very large. To keep responses manageable and performant, these endpoints use pagination to break results into smaller, digestible chunks.
 
----
+<Callout>
+All paginated endpoints return a maximum of 25 items per request by default, with a configurable limit between 1 and 25 items.
+</Callout>
 
-Documentation under construction
+## How Pagination Works
 
-{/* TODO: Implement pagination logic for listGames, and document it */}
+HTTP Games uses **cursor-based pagination**, which is more reliable than offset-based pagination for dynamic datasets. Instead of using page numbers, you use cursors that point to specific items in the dataset.
+
+Each paginated response includes:
+- `total`: The total number of items available
+- `cursorNext`: A cursor to fetch the next page of results
+- `cursorPrevious`: A cursor to fetch the previous page of results
+- The actual data array (e.g., `tiles`, `dungeons`, etc.)
+
+## Preparation: Creating a Dungeon
+
+For our examples, we'll use the GridTrap tiles endpoint. First, let's create a dungeon to work with:
+
+```bash
+curl \
+  -X POST \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "size": "10x10"
+  }' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons
+```
+
+This creates a 10x10 dungeon with 100 tiles, perfect for demonstrating pagination. Save the dungeon `id` from the response for use in the following examples.
+
+## Basic Pagination Example
+
+Let's start by fetching the list of tiles:
+
+```bash
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
+```
+
+The response will look like this:
+
+```json
+{
+  "total": 100,
+  "cursorNext": "after:tile_id_25",
+  "cursorPrevious": "before:tile_id_1",
+  "tiles": [
+    // 25 tiles
+  ]
+}
+```
+
+Notice that:
+- `total` shows 100 tiles are available in the dungeon
+- `cursorNext` provides a cursor to fetch next page of tiles
+- `cursorPrevious` provides a cursor to fetch previous page of tiles, but that would be empty since we are on the first page
+- We received 25 tiles (the default limit)
+
+## Customizing the Limit
+
+You can control how many items you want per page using the `limit` parameter:
+
+### Fetch only 5 tiles per page:
+```bash
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -d 'limit=5' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
+```
+
+Response:
+```json
+{
+  "total": 100,
+  "cursorNext": "after:tile_id_5",
+  "cursorPrevious": "before:tile_id_1",
+  "tiles": [
+    // 5 tiles
+  ]
+}
+```
+
+## Forward Navigation (Next Page)
+
+To fetch the next page of results, use the `cursorNext` value from the previous response as the `cursor` parameter:
+
+```bash
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -d 'cursor=after:tile_id_25' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
+```
+
+Response will include second page of tiles:
+
+```json
+{
+  "total": 100,
+  "cursorNext": "after:tile_id_50",
+  "cursorPrevious": "before:tile_id_26",
+  "tiles": [
+    // Next 25 tiles (tiles 26-50)
+  ]
+}
+```
+
+## Backward Navigation (Previous Page)
+
+To go back to previous pages, use the `cursorPrevious` value from your current response:
+
+```bash
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -d 'cursor=before:tile_id_26' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
+```
+
+This will return the first 25 tiles again:
+
+```json
+{
+  "total": 100,
+  "cursorNext": "after:tile_id_25",
+  "cursorPrevious": "before:tile_id_1",
+  "tiles": [
+    // First 25 tiles (tiles 1-25)
+  ]
+}
+```
+
+## Combining Pagination with Filters
+
+Pagination works seamlessly with filtering parameters. For example, to paginate through only the wall tiles:
+
+```bash
+# Get first page of wall tiles only
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -d 'type=wall' \
+  -d 'limit=5' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
+```
+
+```bash
+# Get next page of wall tiles using cursor from previous response
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -d 'type=wall' \
+  -d 'limit=5' \
+  -d 'cursor=after:wall_tile_id_5' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
+```
+
+## End of the page
+
+When you reach the last page of results:
+- `cursorNext` will be `null`
+- `cursorPrevious` will still contain a valid cursor to go back
+- The number of items returned will be 0
+
+Example of the last page:
+```json
+{
+  "total": 100,
+  "cursorNext": null,
+  "cursorPrevious": "before:tile_id_76",
+  "tiles": []
+}
+```
+
+Similarly, when paginating backwards, last page will have `cursorPrevious` set to `null`, number of items will be 0, and `cursorNext` will still contain a valid cursor to go in opposite direction.

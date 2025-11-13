@@ -27,7 +27,7 @@ curl \
   https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons
 ```
 
-<AutoTypeTable name="AutoTypeTableExample" type='export interface AutoTypeTableExample {
+<AutoTypeTable name="AutoType" type='export interface AutoType {
     /**
     * A size of grid in which you will play.
     * 
@@ -88,15 +88,135 @@ curl \
 ## Get a dungeon
 
 <Callout>
-    This is optional section and not required for first playthrough.
+    This section is optional and not required for first playthrough.
 </Callout>
 
-TODO: Write this part
+Getting details about a dungeon can be done right after creating it, or anytime in future. It is mostly useful to check status of the game.
+
+To see details of a dungeon you previously created, send the following request:
+
+```bash
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]
+```
+
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Bad request (400)
+      
+    Dungeon ID you provided in path is invalid.
+    
+    ### Unauthorized (401)
+    
+    Error caused by missing or invalid token in authorization header.
+    
+    ### Forbidden (403)
+    
+    The dungeon has been created by another player.
+    
+    ### OK (200)
+    
+    Dungeon exists and you are given details about it.
+    
+    ```json
+    {
+      "id": "691350260...",
+      "size": "4x4",
+      "hardcore": false,
+      "seed": 3197370415,
+      "status": "started",
+    }
+    ```
+  </Accordion>
+</Accordions>
 
 ## List all dungeons
 
 <Callout>
-    This is optional section and not required for first playthrough.
+    This section is optional and not required for first playthrough.
 </Callout>
 
-TODO: Write this part
+You can get list of all dungeons you have created. This can be useful in many scenarios:
+
+- Counting how many dungeons you have escaped
+- Filtering all hardcore dungeons
+- Getting all unfinished dungeons of size 10x10
+- And a lot more...
+
+To fetch list of dungeons, send following request:
+
+```bash
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons
+```
+<AutoTypeTable name="AutoType" type='export interface AutoType {
+    /**
+    * Comma-separated list of sizes. Allowed values are `4x4`, `7x7`, `10x10`.
+    **/
+    size?: string;
+
+    /**
+    * Comma-separated list of hardcore modes. Allowed values are `true`, `false`.
+    **/
+    hardcore?: string;
+    
+    /**
+    * Comma-separated list of statuses. Allowed values are `started`, `escaped`, `trapped`.
+    **/
+    status?: string;
+    
+    /**
+    * Amount of dungeons to be included in the response. Must be between 1 and 25.
+    **/
+    limit?: number;
+    
+    /**
+    * Cursor for pagination. Must be a valid cursor returned by previous request.
+    **/
+    cursor?: string;
+}' />
+
+<Accordions type="single">
+  <Accordion title="Response">
+    ### Bad request (400)
+      
+    Search parameters are invalid, and response includes error details.
+    
+    ### Unauthorized (401)
+    
+    Error caused by missing or invalid token in authorization header.
+    
+    ### OK (200)
+    
+    List of dungeons is returned.
+    
+    ```json
+    {
+      "total": 2,
+      "cursorPrevious": "before:690a33..",
+      "cursorNext": "after:68f0b9...",
+      "dungeons": [
+        // Same as structure as getting a dungeon
+      ]
+    }
+    ```
+  </Accordion>
+</Accordions>
+
+As an example of a more complex search, if you wanted to get all unfinished dungeons of size 4x4 or 7x7 that are not hardcore, you could send a following request:
+
+```bash
+curl \
+  -X GET \
+  -H 'Authorization: Bearer sk_Guei2HJgU...' \
+  -d 'size=4x4,7x7' \
+  -d 'hardcore=false' \
+  -d 'status=started' \
+  https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons
+```
+
+This endpoint also supports pagination using `limit` and `cursor` parameters. Learn more about it in [pagination documentation](https://http-games.almostapps.eu/docs/basics/pagination).

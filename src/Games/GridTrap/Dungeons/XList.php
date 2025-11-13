@@ -26,6 +26,7 @@ class XList extends Action
             ->param('cursor', '', new Text(255), optional: true)
             ->param('size', '', new Text(1024), optional: true)
             ->param('hardcore', '', new Text(1024), optional: true)
+            ->param('status', '', new Text(1024), optional: true)
             ->inject('user')
             ->inject('databaseId')
             ->inject('sdkForTables')
@@ -38,6 +39,7 @@ class XList extends Action
         string $cursor,
         string $size,
         string $hardcore,
+        string $status,
         Document $user,
         string $databaseId,
         TablesDB $sdkForTables,
@@ -53,6 +55,20 @@ class XList extends Action
                     throw new HTTPException(HTTPException::TYPE_BAD_REQUEST, 'Invalid size: Must be one of "4x4", "7x7", or "10x10". For more values, use comma-separated list');
                 }
                 $sizeFilters[] = $size;
+            }
+        }
+        
+        // TODO: Add tests filtering by status
+        /**
+         * @var array<string> $statusFilters
+         */
+        $statusFilters = [];
+        if (! empty($status)) {
+            foreach (\explode(',', $status) as $status) {
+                if (! ((new WhiteList(['started', 'escaped', 'trapped']))->isValid($status))) {
+                    throw new HTTPException(HTTPException::TYPE_BAD_REQUEST, 'Invalid status: Must be one of "started", "escaped", or "trapped". For more values, use comma-separated list');
+                }
+                $statusFilters[] = $status;
             }
         }
 
@@ -86,12 +102,17 @@ class XList extends Action
             Query::limit($limit),
         ];
 
+        // TODO: Add indexes for all columns used in XList endpoints
         if (\count($sizeFilters) > 0) {
             $queries[] = Query::equal('size', $sizeFilters);
         }
-
+        
         if (\count($hardcoreFilters) > 0) {
             $queries[] = Query::equal('hardcore', $hardcoreFilters);
+        }
+
+        if (\count($statusFilters) > 0) {
+            $queries[] = Query::equal('status', $statusFilters);
         }
 
         if (! empty($cursorId) && ! empty($cursorDirection)) {
