@@ -6,6 +6,7 @@ use Appwrite\AppwriteException;
 use HTTPGames\Exceptions\HTTPException;
 use Utopia\Exception as UtopiaException;
 use Utopia\Platform\Action;
+use Utopia\Request;
 use Utopia\Response;
 
 class OnError extends Action
@@ -15,21 +16,25 @@ class OnError extends Action
         $this->setType(Action::TYPE_ERROR)
             ->groups(['*'])
             ->inject('error')
+            ->inject('request')
             ->inject('response')
             ->callback($this->action(...));
     }
 
-    public function action(\Throwable $error, Response $response): void
+    public function action(\Throwable $error, Request $request, Response $response): void
     {
         \error_log('----');
+        \error_log('HTTP Request Details:');
+        \error_log('Method: '.$request->getMethod());
+        \error_log('URI: '.$request->getURI());
+        \error_log('Error Details:');
         \error_log('Type: '.\get_class($error));
         \error_log('Message: '.$error->getMessage());
         \error_log('Trace: '.$error->getTraceAsString());
         \error_log('File: '.$error->getFile().':'.$error->getLine());
         if ($error instanceof AppwriteException) {
-            \error_log('Type: '.$error->getType());
+            \error_log('Appwrite Type: '.$error->getType());
         }
-
         \error_log('----');
 
         $publicError = new HTTPException(
