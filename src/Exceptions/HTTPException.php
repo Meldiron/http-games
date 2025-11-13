@@ -44,6 +44,8 @@ class HTTPException extends \Exception
 
     public const TYPE_MOVE_TO_WALL_NOT_ALLOWED = 'move_to_wall_not_allowed';
 
+    public const TYPE_RATE_LIMIT_EXCEEDED = 'rate_limit_exceeded';
+
     const EXCEPTIONS = [
         self::TYPE_TILE_NOT_FOUND => [
             'message' => 'Tile not found.',
@@ -120,6 +122,10 @@ class HTTPException extends \Exception
         self::TYPE_MOVE_TO_WALL_NOT_ALLOWED => [
             'message' => 'You attempted to move in a direction, but bumped your head into a wall.',
             'code' => 406,
+        ],
+        self::TYPE_RATE_LIMIT_EXCEEDED => [
+            'message' => 'Rate limit exceeded. Please wait one second and send the request again.',
+            'code' => 429,
         ],
     ];
 
