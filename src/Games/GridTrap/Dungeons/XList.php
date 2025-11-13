@@ -57,7 +57,7 @@ class XList extends Action
                 $sizeFilters[] = $size;
             }
         }
-        
+
         // TODO: Add tests filtering by status
         /**
          * @var array<string> $statusFilters
@@ -106,7 +106,7 @@ class XList extends Action
         if (\count($sizeFilters) > 0) {
             $queries[] = Query::equal('size', $sizeFilters);
         }
-        
+
         if (\count($hardcoreFilters) > 0) {
             $queries[] = Query::equal('hardcore', $hardcoreFilters);
         }
