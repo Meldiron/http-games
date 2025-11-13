@@ -80,7 +80,7 @@
             "$id": "gridTrapTiles",
             "$permissions": [],
             "databaseId": "production",
-            "name": "Grid Trap - Tiles",
+            "name": "GridTrap - Tiles",
             "enabled": true,
             "rowSecurity": false,
             "columns": [
@@ -119,7 +119,7 @@
             "$id": "gridTrapDungeons",
             "$permissions": [],
             "databaseId": "production",
-            "name": "Grid Trap - Dungeons",
+            "name": "GridTrap - Dungeons",
             "enabled": true,
             "rowSecurity": false,
             "columns": [

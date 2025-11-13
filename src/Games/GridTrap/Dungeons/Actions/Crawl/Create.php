@@ -17,7 +17,7 @@ class Create extends Action
         $this
             ->setHttpMethod('POST')
             ->setHttpPath('/v1/games/grid-trap/dungeons/:dungeonId/actions/crawl')
-            ->desc('Crawl back to enterance')
+            ->desc('Crawl back to entrance')
             ->groups(['withSession', 'withGridTrapDungeon'])
             ->param('dungeonId', '', new UID)
             ->inject('gridTrapDungeon')
@@ -50,20 +50,20 @@ class Create extends Action
 
         $tiles = $sdkForTables->listRows($databaseId, 'gridTrapTiles', [
             Query::equal('dungeonId', $dungeonId),
-            Query::equal('type', 'enterance'),
+            Query::equal('type', 'entrance'),
             Query::limit(1),
         ]);
 
-        $enteranceTile = new Document($tiles['rows'][0] ?? []);
+        $entranceTile = new Document($tiles['rows'][0] ?? []);
 
         // Server error
-        if ($enteranceTile->isEmpty()) {
-            throw new \Exception('Enterance tile could not be found.');
+        if ($entranceTile->isEmpty()) {
+            throw new \Exception('Entrance tile could not be found.');
         }
 
         $updates = [
             'cartographerTrapped' => false,
-            'cartographerPosition' => $enteranceTile->getAttribute('position'),
+            'cartographerPosition' => $entranceTile->getAttribute('position'),
         ];
 
         $sdkForTables->updateRow($databaseId, 'gridTrapDungeons', $dungeonId, $updates);

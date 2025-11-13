@@ -5,11 +5,11 @@ description: Register an account, sign into the account, and obtain a token.
 
 ## Preparation
 
-You don't need to setup anything! Any runtime or language you are already using is capable of sending HTTP requests, so simply use what you are familiar with.
+You don't need to set up anything! Any runtime or language you are already using is capable of sending HTTP requests, so simply use what you are familiar with.
 
-All examples will be written as CURL requests. This format is easy to run in terminal, import into HTTP clients, and all AI agents understand it, so you can easily convert it into your preferred programming language.
+All examples will be written as cURL requests. This format is easy to run in terminal, import into HTTP clients, and all AI agents understand it, so you can easily convert it into your preferred programming language.
 
-Here is example of a CURL request:
+Here is an example of a cURL request:
 
 ```bash
 curl -X GET https://api.http-games.almostapps.eu/v1/health
@@ -23,7 +23,7 @@ After running the command, you should see a response similar to this:
 }
 ```
 
-## Signing up
+## Signing Up
 
 To register an account, send an HTTP request with email, password (twice), and a nickname.
 
@@ -48,7 +48,7 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
   <Accordion title="Response">
     ### Bad request (400)
       
-    Error usually thrown when body is missing or invalid. Common reasons are password confirmation missmatch, too short password and nickname, or invalid email address.
+    Error usually thrown when body is missing or invalid. Common reasons are password confirmation mismatch, too short password and nickname, or invalid email address.
     
     ### Conflict (409)
     
@@ -56,7 +56,7 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
     
     ### Created (201)
     
-    Your account has been created successfully. Response includes detail about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
+    Your account has been created successfully. Response includes details about your account, including some new ones such as your user ID, or more importantly, your token for authentication.
     
     ```json
     {
@@ -69,7 +69,7 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
   </Accordion>
 </Accordions>
 
-## Obtaining a token
+## Obtaining a Token
 
 Ensure you have [signed up](#signing-up) first, and you remember your email and password.
 
@@ -94,7 +94,7 @@ curl \
     
     ### Created (201)
     
-    A token has been created successfully. Response includes detail about your token, your token's secret.
+    A token has been created successfully. Response includes details about your token, your token's secret.
     
     ```json
     {
@@ -108,7 +108,7 @@ curl \
   </Accordion>
 </Accordions>
 
-## Sending authorized requests
+## Sending Authorized Requests
 
 In all requests sent when playing games, you will need to provide your token's secret in `Authorization` header.
 
@@ -158,12 +158,12 @@ curl \
 
 You have successfully opened your account, signed in, and made your very first authenticated request! You are now ready to play HTTP games.
 
-## What next?
+## What's Next?
 
 <Cards>
   <Card
-    description="Very simple game about finding safe path to the finish. Each time you fail path, remember the wrong moves."
-    title="Grid Trap, your first game"
+    description="Very simple game about finding a safe path to the finish. Each time you fail the path, remember the wrong moves."
+    title="GridTrap, Your First Game"
     href="/docs/grid-trap"
   />
 </Cards>

@@ -19,7 +19,7 @@ class GridTrap extends Schema
         $this->sdkForTables->createTable(
             $this->databaseId,
             'gridTrapTiles',
-            'Grid Trap - Tiles',
+            'GridTrap - Tiles',
         );
         $this->sdkForTables->createPointColumn(
             $this->databaseId,
@@ -42,7 +42,7 @@ class GridTrap extends Schema
         $this->sdkForTables->createTable(
             $this->databaseId,
             'gridTrapDungeons',
-            'Grid Trap - Dungeons',
+            'GridTrap - Dungeons',
         );
         $this->sdkForTables->createStringColumn(
             $this->databaseId,

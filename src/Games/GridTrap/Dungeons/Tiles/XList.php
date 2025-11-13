@@ -76,8 +76,8 @@ class XList extends Action
         $typeFilters = [];
         if (! empty($type)) {
             foreach (\explode(',', $type) as $type) {
-                if (! ((new WhiteList(['wall', 'ground', 'enterance', 'rope']))->isValid($type))) {
-                    throw new HTTPException(HTTPException::TYPE_BAD_REQUEST, 'Invalid type: Must be one of "wall" or "ground" or "enterance" or "rope". For more values, use comma-separated list');
+                if (! ((new WhiteList(['wall', 'ground', 'entrance', 'rope']))->isValid($type))) {
+                    throw new HTTPException(HTTPException::TYPE_BAD_REQUEST, 'Invalid type: Must be one of "wall" or "ground" or "entrance" or "rope". For more values, use comma-separated list');
                 }
                 $typeFilters[] = $type;
 

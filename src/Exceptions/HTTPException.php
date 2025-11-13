@@ -98,7 +98,7 @@ class HTTPException extends \Exception
             'code' => 404,
         ],
         self::TYPE_CRAWL_NOT_REQUIRED => [
-            'message' => 'You have not fallen into a trap and do not need to crawl to get to the enterance.',
+            'message' => 'You have not fallen into a trap and do not need to crawl to get to the entrance.',
             'code' => 406,
         ],
         self::TYPE_CLIMB_NOT_ALLOWED => [

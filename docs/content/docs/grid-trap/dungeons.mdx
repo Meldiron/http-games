@@ -9,11 +9,11 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
     If you haven't obtained a token yet, check out [Authentication](/docs/basics/authentication) documentation.
 </Callout>
 
-## Create a dungeon
+## Create a Dungeon
 
-In a game of Grid Trap, your goal is to escape from a dungeon by avoiding trapdoors.
+In a game of GridTrap, your goal is to escape from a dungeon by avoiding trapdoors.
 
-To start a new game, send a following CURL request to create a new dungeon:
+To start a new game, send the following cURL request to create a new dungeon:
 
 ```bash
 curl \
@@ -60,7 +60,7 @@ curl \
   <Accordion title="Response">
     ### Internal server error (500)
         
-    Internal error, likely due to dungeon generation. Hopefully never happens, and if it does, re-sending same request likely helps.
+    Internal error, likely due to dungeon generation. Hopefully never happens, and if it does, re-sending the same request likely helps.
   
     ### Bad request (400)
       
@@ -72,7 +72,7 @@ curl \
     
     ### Created (201)
     
-    Dungeon has been created and you can play it.
+    The dungeon has been created and you can play it.
     
     ```json
     {
@@ -85,13 +85,13 @@ curl \
   </Accordion>
 </Accordions>
 
-## Get a dungeon
+## Get a Dungeon
 
 <Callout>
     This section is optional and not required for first playthrough.
 </Callout>
 
-Getting details about a dungeon can be done right after creating it, or anytime in future. It is mostly useful to check status of the game.
+Getting details about a dungeon can be done right after creating it, or anytime in the future. It is mostly useful to check the status of the game.
 
 To see details of a dungeon you previously created, send the following request:
 
@@ -118,7 +118,7 @@ curl \
     
     ### OK (200)
     
-    Dungeon exists and you are given details about it.
+    The dungeon exists and you are given details about it.
     
     ```json
     {
@@ -132,20 +132,20 @@ curl \
   </Accordion>
 </Accordions>
 
-## List all dungeons
+## List All Dungeons
 
 <Callout>
     This section is optional and not required for first playthrough.
 </Callout>
 
-You can get list of all dungeons you have created. This can be useful in many scenarios:
+You can get a list of all dungeons you have created. This can be useful in many scenarios:
 
 - Counting how many dungeons you have escaped
 - Filtering all hardcore dungeons
 - Getting all unfinished dungeons of size 10x10
 - And a lot more...
 
-To fetch list of dungeons, send following request:
+To fetch a list of dungeons, send the following request:
 
 ```bash
 curl \
@@ -192,7 +192,7 @@ curl \
     
     ### OK (200)
     
-    List of dungeons is returned.
+    A list of dungeons is returned.
     
     ```json
     {
@@ -207,7 +207,7 @@ curl \
   </Accordion>
 </Accordions>
 
-As an example of a more complex search, if you wanted to get all unfinished dungeons of size 4x4 or 7x7 that are not hardcore, you could send a following request:
+As an example of a more complex search, if you wanted to get all unfinished dungeons of size 4x4 or 7x7 that are not hardcore, you could send the following request:
 
 ```bash
 curl \
@@ -219,4 +219,4 @@ curl \
   https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons
 ```
 
-This endpoint also supports pagination using `limit` and `cursor` parameters. Learn more about it in [pagination documentation](https://http-games.almostapps.eu/docs/basics/pagination).
+This endpoint also supports pagination using `limit` and `cursor` parameters. Learn more about it in the [pagination documentation](https://http-games.almostapps.eu/docs/basics/pagination).

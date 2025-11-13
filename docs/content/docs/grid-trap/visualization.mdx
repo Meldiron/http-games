@@ -9,9 +9,9 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
     If you haven't obtained a token yet, check out [Authentication](/docs/basics/authentication) documentation.
 </Callout>
 
-## Get cartographer position
+## Get Cartographer Position
 
-In Grid Trap, the cartographer is your character navigating through the dungeon. To visualize the game state, you need to know where the cartographer is currently positioned and whether they have fallen into a trap.
+In GridTrap, the cartographer is your character navigating through the dungeon. To visualize the game state, you need to know where the cartographer is currently positioned and whether they have fallen into a trap.
 
 To get the current position of your cartographer, send the following request:
 
@@ -50,7 +50,7 @@ curl \
   </Accordion>
 </Accordions>
 
-## List dungeon tiles
+## List Dungeon Tiles
 
 To visualize the entire dungeon layout, you need to retrieve information about all tiles. Each tile represents a position in the dungeon grid and has a specific type that determines what the cartographer will encounter there.
 
@@ -75,7 +75,7 @@ curl \
     y?: string;
     
     /**
-    * Comma-separated list of tile types to filter by. Allowed values are "wall", "ground", "enterance", "rope".
+    * Comma-separated list of tile types to filter by. Allowed values are "wall", "ground", "entrance", "rope".
     **/
     type?: string;
     
@@ -106,7 +106,7 @@ curl \
     
     ### OK (200)
     
-    List of tiles is returned.
+    A list of tiles is returned.
     
     ```json
     {
@@ -126,8 +126,8 @@ curl \
 The dungeon contains several types of tiles:
 
 - **`wall`**: Impassable barriers that block movement
-- **`ground`**: Walkable areas that may have a hidden traps
-- **`enterance`**: The starting position where the cartographer begins
+- **`ground`**: Walkable areas that may have hidden traps
+- **`entrance`**: The starting position where the cartographer begins
 - **`rope`**: The exit point that allows escape from the dungeon
 
 As an example, if you wanted to get only the entrance and exit tiles, you could send:
@@ -136,19 +136,19 @@ As an example, if you wanted to get only the entrance and exit tiles, you could 
 curl \
   -X GET \
   -H 'Authorization: Bearer sk_Guei2HJgU...' \
-  -d 'type=enterance,rope' \
+  -d 'type=entrance,rope' \
   https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
 ```
 
-This endpoint also supports pagination using `limit` and `cursor` parameters. Learn more about it in [pagination documentation](https://http-games.almostapps.eu/docs/basics/pagination).
+This endpoint also supports pagination using `limit` and `cursor` parameters. Learn more about it in the [pagination documentation](https://http-games.almostapps.eu/docs/basics/pagination).
 
-## Get specific tile
+## Get Specific Tile
 
 <Callout>
     This section is optional and not required for first playthrough.
 </Callout>
 
-If you need information about a specific tile in the dungeon, you can retrieve it by its coordinates. This can be useful depending on implementation of your play. For instance, you might want to check if tile north of your player is a ground before moving there.
+If you need information about a specific tile in the dungeon, you can retrieve it by its coordinates. This can be useful depending on the implementation of your play. For instance, you might want to check if the tile north of your player is ground before moving there.
 
 To get details about a specific tile, send the following request:
 

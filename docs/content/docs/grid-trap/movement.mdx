@@ -9,7 +9,7 @@ import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
     If you haven't obtained a token yet, check out [Authentication](/docs/basics/authentication) documentation.
 </Callout>
 
-## Move through the dungeon
+## Move Through the Dungeon
 
 The primary way to navigate through the dungeon is by moving your cartographer in one of four cardinal directions. Each move will take you to an adjacent tile, where you might encounter walls, safe ground, traps, or the escape rope.
 
@@ -31,7 +31,7 @@ curl \
     * The direction to move the cartographer.
     * 
     * - `north` moves up (positive Y direction)
-    * - `south` moves down (negative Y direction)
+    * - `south` moves down (negative Y direction)  
     * - `east` moves right (positive X direction)
     * - `west` moves left (negative X direction)
     **/
@@ -61,7 +61,7 @@ curl \
     
     ### Created (201)
     
-    Movement was successful. The response indicates your new position and whether you stepped on a trap.
+    The movement was successful. The response indicates your new position and whether you stepped on a trap.
     
     ```json
     {
@@ -70,11 +70,11 @@ curl \
     }
     ```
     
-    If you step on a trap, the response will also include `"cartographerTrapped": true`. In hardcore mode, stepping on a trap will also returns `"status": "trapped"`, ending the game.
+    If you step on a trap, the response will also include `"cartographerTrapped": true`. In hardcore mode, stepping on a trap will also return `"status": "trapped"`, ending the game.
   </Accordion>
 </Accordions>
 
-## Crawl back to entrance
+## Crawl Back to Entrance
 
 When your cartographer falls into a trap, they become trapped and cannot move. Your cartographer will need to crawl back to the dungeon entrance to continue your escape attempt.
 
@@ -118,7 +118,7 @@ curl \
     
     ### Created (201)
     
-    Crawling was successful. You are now back at the entrance and no longer trapped.
+    The crawling was successful. You are now back at the entrance and no longer trapped.
     
     ```json
     {
@@ -130,9 +130,9 @@ curl \
   </Accordion>
 </Accordions>
 
-## Climb the rope to escape
+## Climb the Rope to Escape
 
-The ultimate goal in Grid Trap is to reach the rope tile and climb it to escape the dungeon. You can only climb when your cartographer is positioned exactly on the rope tile.
+The ultimate goal in GridTrap is to reach the rope tile and climb it to escape the dungeon. You can only climb when your cartographer is positioned exactly on the rope tile.
 
 To climb the rope and escape the dungeon, send the following request:
 
@@ -165,7 +165,7 @@ curl \
     
     ### Created (201)
     
-    Climbing was successful. You have escaped the dungeon!
+    The climbing was successful. You have escaped the dungeon!
     
     ```json
     {

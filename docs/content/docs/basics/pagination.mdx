@@ -64,15 +64,15 @@ The response will look like this:
 
 Notice that:
 - `total` shows 100 tiles are available in the dungeon
-- `cursorNext` provides a cursor to fetch next page of tiles
-- `cursorPrevious` provides a cursor to fetch previous page of tiles, but that would be empty since we are on the first page
+- `cursorNext` provides a cursor to fetch the next page of tiles
+- `cursorPrevious` provides a cursor to fetch the previous page of tiles, but that would be empty since we are on the first page
 - We received 25 tiles (the default limit)
 
 ## Customizing the Limit
 
 You can control how many items you want per page using the `limit` parameter:
 
-### Fetch only 5 tiles per page:
+### Fetch Only 5 Tiles per Page:
 ```bash
 curl \
   -X GET \
@@ -105,7 +105,7 @@ curl \
   https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
 ```
 
-Response will include second page of tiles:
+The response will include the second page of tiles:
 
 ```json
 {
@@ -168,7 +168,7 @@ curl \
   https://api.http-games.almostapps.eu/v1/games/grid-trap/dungeons/[YOUR_DUNGEON_ID]/tiles
 ```
 
-## End of the page
+## End of the Page
 
 When you reach the last page of results:
 - `cursorNext` will be `null`
@@ -185,4 +185,4 @@ Example of the last page:
 }
 ```
 
-Similarly, when paginating backwards, last page will have `cursorPrevious` set to `null`, number of items will be 0, and `cursorNext` will still contain a valid cursor to go in opposite direction.
+Similarly, when paginating backwards, the last page will have `cursorPrevious` set to `null`, the number of items will be 0, and `cursorNext` will still contain a valid cursor to go in the opposite direction.

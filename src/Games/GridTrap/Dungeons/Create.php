@@ -41,7 +41,7 @@ class Create extends Action
     ): void {
         /*
         * 3x3 example of a map
-        * e=enterance
+        * e=entrance
         * r=rope
         * .=wall
         * #=trap/ground
@@ -73,7 +73,7 @@ class Create extends Action
         $tiles[] = new Document([
             'x' => $startX,
             'y' => $startY,
-            'type' => 'enterance',
+            'type' => 'entrance',
         ]);
 
         $endX = $randomness->generateInRange(1, $width);
@@ -192,7 +192,7 @@ class Create extends Action
     {
         $emojis = [
             'wall' => '🟫',
-            'enterance' => '🍙',
+            'entrance' => '🍙',
             'rope' => '🧗',
             'ground' => '🆗',
             'trap' => '🕳️',
