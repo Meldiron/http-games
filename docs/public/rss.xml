@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HTTP Games - Play Games Through API Requests</title>
+    <description>An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no GUI, just pure code.</description>
+    <link>https://http-games.almostapps.eu</link>
+    <atom:link href="https://http-games.almostapps.eu/rss.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Jan 2024 00:00:00 GMT</lastBuildDate>
+    <pubDate>Thu, 01 Jan 2024 00:00:00 GMT</pubDate>
+    <ttl>1440</ttl>
+    <managingEditor>contact@almostapps.eu (Meldiron)</managingEditor>
+    <webMaster>contact@almostapps.eu (Meldiron)</webMaster>
+    <category>Games</category>
+    <category>Programming</category>
+    <category>API</category>
+    <image>
+      <url>https://http-games.almostapps.eu/og.png</url>
+      <title>HTTP Games</title>
+      <link>https://http-games.almostapps.eu</link>
+      <width>1200</width>
+      <height>630</height>
+    </image>
+    
+    <item>
+      <title>Welcome to HTTP Games</title>
+      <description>Discover a new way to play games through HTTP API requests. No GUI, just pure code and developer-friendly gaming.</description>
+      <link>https://http-games.almostapps.eu</link>
+      <guid isPermaLink="true">https://http-games.almostapps.eu</guid>
+      <pubDate>Thu, 01 Jan 2024 00:00:00 GMT</pubDate>
+      <category>Games</category>
+      <category>API</category>
+    </item>
+    
+    <item>
+      <title>GridTrap - Strategy Game via API</title>
+      <description>Play GridTrap, a strategic game where you control your moves through HTTP API calls. Perfect for developers who want to game with code.</description>
+      <link>https://http-games.almostapps.eu/docs/games/gridtrap</link>
+      <guid isPermaLink="true">https://http-games.almostapps.eu/docs/games/gridtrap</guid>
+      <pubDate>Thu, 01 Jan 2024 00:00:00 GMT</pubDate>
+      <category>Games</category>
+      <category>Strategy</category>
+    </item>
+  </channel>
+</rss>

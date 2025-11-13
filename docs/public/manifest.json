@@ -1,0 +1,75 @@
+{
+  "name": "HTTP Games - Play Games Through API Requests",
+  "short_name": "HTTP Games",
+  "description": "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no GUI, just pure code.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "categories": ["games", "entertainment", "developer-tools"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "id": "http-games",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-on-light.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-on-dark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Play GridTrap",
+      "short_name": "GridTrap",
+      "description": "Start playing GridTrap game",
+      "url": "/docs/games/gridtrap",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "48x48"
+        }
+      ]
+    },
+    {
+      "name": "API Documentation",
+      "short_name": "Docs",
+      "description": "View API documentation",
+      "url": "/docs",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "48x48"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "HTTP Games homepage showing API-based gaming platform"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}
