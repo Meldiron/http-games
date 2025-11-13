@@ -24,7 +24,7 @@ export async function GET(
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>HTTP Games Logo</title>
+      <title style={{ opacity: 0, display: "none" }}>HTTP Games logo</title>
       <path
         d="M64.118 46.4529C57.7946 46.4529 52.6684 51.5791 52.6684 57.9025C52.6684 64.226 57.7946 69.3522 64.118 69.3522C70.4415 69.3522 75.5677 64.226 75.5677 57.9025C75.5677 51.5791 70.4415 46.4529 64.118 46.4529Z"
         fill="#2B7FFF"
@@ -56,6 +56,8 @@ export async function GET(
     <DefaultImage
       title={page.data.title}
       description={page.data.description}
+      primaryColor="rgb(40,40,40)"
+      primaryTextColor="#fff"
       icon={image}
     />,
     {
