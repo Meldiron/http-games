@@ -5,7 +5,7 @@ namespace HTTPGames\Hooks;
 use Appwrite\Client;
 use HTTPGames\Exceptions\HTTPException;
 use Utopia\Abuse\Abuse;
-use Utopia\Abuse\Adapters\TimeLimit\AppwriteTablesDB;
+use Utopia\Abuse\Adapters\TimeLimit\Appwrite\TablesDB;
 use Utopia\Platform\Action;
 use Utopia\Request;
 
@@ -35,7 +35,7 @@ class OnInit extends Action
 
         $key = ! empty($token) ? $token : $ip;
 
-        $adapter = new AppwriteTablesDB($key, limit: 1, seconds: 1, client: $sdk, databaseId: $databaseId.'-abuse');
+        $adapter = new TablesDB($key, limit: 1, seconds: 1, client: $sdk, databaseId: $databaseId.'-abuse');
 
         $adapter->setup();
 

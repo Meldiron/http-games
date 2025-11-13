@@ -1,6 +1,70 @@
 ---
 title: Rate Limiting
-description: What are rate limits and how to respect them in your app.
+description: What are rate limits and how to respect them in your code.
 ---
 
-At the moment, there are no rate limits. They will be introduced in the near future.
+import { Callout } from "fumadocs-ui/components/callout";
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+## Rate limits
+
+HTTP Games implements rate limiting to ensure fair gameplay for all players, and introduce optimization challenge for vivid players.
+
+<Callout>
+Rate limiting is enforced at 1 request per second per unique identifier. An identifier is a token in `Authorization` header, or your IP address.
+</Callout>
+
+If you exceed this limit, you'll receive a `429 Too Many Requests` response with `type` set to `rate_limit_exceeded` in the response body. 
+
+## Best Practices
+
+There are many strategies to respect rate limits. Below you can find examples of the simplest one, but you are encouraged to explore more advanced strategies, and build the most optimal playthrough.
+
+### Retry Logic
+
+When sending any request, catch 429 response code, and attempt to re-send same request after a second.
+
+```python
+import requests
+import time
+
+def make_request_with_retry(url, attempt=1):
+    response = requests.get(url)
+    
+    if response.status_code == 429:
+        if attempt > 3:
+            raise Exception("Request could not be re-sent.")
+    
+        time.sleep(1)
+        return make_request_with_retry(url, attempt + 1)
+    return None
+
+response = make_request_with_retry("https://api.http-games.almostapps.eu/v1/health")
+
+print("Status: ", response.status_code)
+print("Body: ", response.json())
+```
+
+### Space Out Requests
+
+Instead of sending requests as fast as possible, add one second delay before or after each request.
+
+```python
+import requests
+import time
+
+response = requests.get("https://api.http-games.almostapps.eu/v1/health")
+print("Status: ", response.status_code)
+print("Body: ", response.json())
+time.sleep(1)
+
+response = requests.get("https://api.http-games.almostapps.eu/v1/health")
+print("Status: ", response.status_code)
+print("Body: ", response.json())
+time.sleep(1)
+
+response = requests.get("https://api.http-games.almostapps.eu/v1/health")
+print("Status: ", response.status_code)
+print("Body: ", response.json())
+time.sleep(1)
+```
