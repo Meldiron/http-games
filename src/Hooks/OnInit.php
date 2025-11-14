@@ -24,7 +24,7 @@ class OnInit extends Action
 
     public function action(Request $request, Client $sdk, string $databaseId): void
     {
-        if (($_ENV['_APP_DATABASE_ABUSE'] ?? '') === 'disabled') {
+        if (($_ENV['_APP_ABUSE'] ?? '') === 'disabled') {
             return;
         }
 

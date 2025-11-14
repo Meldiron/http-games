@@ -1,7 +1,7 @@
 {
   "name": "HTTP Games - Play Games Through API Requests",
   "short_name": "HTTP Games",
-  "description": "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no GUI, just pure code.",
+  "description": "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no UI, just pure code.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

@@ -35,7 +35,7 @@ jobs:
         run: |
           touch .env
           echo "_APP_DATABASE_OVERRIDE=ci_$(date +%Y%m%d%H%M%S)" >> .env
-          echo "_APP_DATABASE_ABUSE=disabled" >> .env
+          echo "_APP_ABUSE=disabled" >> .env
           echo "_APP_APPWRITE_PROJECT_ID=${{ secrets._APP_APPWRITE_PROJECT_ID }}" >> .env
           echo "_APP_APPWRITE_ENDPOINT=${{ secrets._APP_APPWRITE_ENDPOINT }}" >> .env
           echo "_APP_APPWRITE_KEY=${{ secrets._APP_APPWRITE_KEY }}" >> .env

@@ -6,7 +6,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "HTTP Games - Play Games Through API Requests",
   description:
-    "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no GUI, just pure code.",
+    "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no UI, just pure code.",
   keywords: [
     "HTTP",
     "API",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "HTTP Games - Play Games Through API Requests",
     description:
-      "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no GUI, just pure code.",
+      "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no UI, just pure code.",
     type: "website",
     url: "https://http-games.almostapps.eu",
     siteName: "HTTP Games",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     creator: "@meldiron",
     title: "HTTP Games - Play Games Through API Requests",
     description:
-      "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no GUI, just pure code.",
+      "An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no UI, just pure code.",
     images: ["/og.png"],
   },
   robots: {
@@ -126,7 +126,7 @@ export default function HomePage() {
             </h1>
             <p className="mt-6 text-lg leading-8 text-neutral-600 dark:text-neutral-300">
               An HTTP-based game platform. By developers, for developers. Play
-              games by sending API requests - no GUI, just pure code.
+              games by sending API requests - no UI, just pure code.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link

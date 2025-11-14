@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>HTTP Games - Play Games Through API Requests</title>
-    <description>An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no GUI, just pure code.</description>
+    <description>An HTTP-based game platform by developers, for developers. Play games like GridTrap by sending API requests - no UI, just pure code.</description>
     <link>https://http-games.almostapps.eu</link>
     <atom:link href="https://http-games.almostapps.eu/rss.xml" rel="self" type="application/rss+xml" />
     <language>en-us</language>
@@ -24,7 +24,7 @@
     
     <item>
       <title>Welcome to HTTP Games</title>
-      <description>Discover a new way to play games through HTTP API requests. No GUI, just pure code and developer-friendly gaming.</description>
+      <description>Discover a new way to play games through HTTP API requests. No UI, just pure code and developer-friendly gaming.</description>
       <link>https://http-games.almostapps.eu</link>
       <guid isPermaLink="true">https://http-games.almostapps.eu</guid>
       <pubDate>Thu, 01 Jan 2024 00:00:00 GMT</pubDate>

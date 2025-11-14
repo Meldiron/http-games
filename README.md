@@ -50,7 +50,7 @@ _APP_APPWRITE_ENDPOINT=https://fra.cloud.appwrite.io/v1
 _APP_APPWRITE_KEY=standard_9ab3ed4525aa7546db...
 _APP_APPWRITE_PROJECT_ID=6910...
 _APP_DATABASE_OVERRIDE=local_version1
-_APP_DATABASE_ABUSE=disabled
+_APP_ABUSE=disabled
 ```
 
 > I recommend to rotate database override each time you change database schema
